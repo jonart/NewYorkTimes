@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Exercise 1</string>
+    <string name="email">Емайл</string>
+    <string name="Subject">Тема: Привет Андроид Академия МСК</string>
+    <string name="enter_email_address">Введите Емайл</string>
+    <string name="email_to">gmaidal.com</string>
+    <string name="are_you_want">Отправить Емайл?</string>
+    <string name="no_apps_email">Повтовое приложение не найдено</string>
+    <string name="preview">Предпросмотр</string>
+    <string name="student_android_academy">Студент Андроид Академии Москва</string>
+    <string name="ex_worker_vtb_bank">Бывший работник ВТБ Банк</string>
+    <string name="junior_android_developer">Начинающий Андроид Разработчик</string>
+    <string name="enter_a_message">Введите сообщения</string>
+    <string name="disclaimer">© 2018 Евгений Камышников</string>
+    <string name="btn_send">Отправить сообщение</string>
+    <string name="no_apps_browser">Браузер не найден</string>
+</resources>

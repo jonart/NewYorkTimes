@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:tools2="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tool">
+    <LinearLayout
+        android:id="@+id/my_linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:context=".CardActivity">
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/descript_photo"
+            android:saveEnabled="false"
+            android:scaleType="centerCrop"
+            android:src="@drawable/photo" />
+        <include layout="@layout/linear" />
+    </LinearLayout>
+</ScrollView>
