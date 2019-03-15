@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Evgeniy Kamyshnikov</string>
+    <string name="app_name">NY Times</string>
     <string name="preview">PREVIEW</string>
     <string name="enter_email_address">Enter e-mail</string>
     <string name="email">EMAIL</string>

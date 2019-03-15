@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Exercise 1</string>
+    <string name="app_name">NY Times</string>
     <string name="email">Емайл</string>
     <string name="Subject">Тема: Привет Андроид Академия МСК</string>
     <string name="enter_email_address">Введите Емайл</string>
