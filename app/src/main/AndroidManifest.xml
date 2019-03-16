@@ -16,6 +16,7 @@
         <activity android:name=".Activity.PreviewActivity" />
         <activity android:name=".Activity.AboutActivity" />
         <activity android:name=".news.NewsListActivity"/>
+        <activity android:name=".news.NewsDetailActivity"/>
         <activity android:name=".Activity.IntroActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

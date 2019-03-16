@@ -14,7 +14,7 @@ public class MultimediaDTO {
      * copyright : Doug Mills/The New York Times
      */
 
-    @SerializedName("num_results")
+    @SerializedName("url")
     private String url;
     @SerializedName("format")
     private String format;
