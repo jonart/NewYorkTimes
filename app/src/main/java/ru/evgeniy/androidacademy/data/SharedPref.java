@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 
 public class SharedPref {
 
-    public static final String SHARED_PREF_NAME = "MY_SHARED_PREF";
-    public static final String FIRST_LAUNCH = "FIRST_LAUNCH";
-    SharedPreferences mSharedPreferences;
+    private static final String SHARED_PREF_NAME = "MY_SHARED_PREF";
+    private static final String FIRST_LAUNCH = "FIRST_LAUNCH";
+    private SharedPreferences mSharedPreferences;
 
     public SharedPref(Context context) {
         mSharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -20,7 +20,7 @@ public class SharedPref {
             return true;
         }
         else {
-            mSharedPreferences.edit().putBoolean(FIRST_LAUNCH, true).commit();
+            mSharedPreferences.edit().putBoolean(FIRST_LAUNCH, true).apply();
             return false;
         }
     }

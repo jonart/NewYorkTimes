@@ -25,7 +25,7 @@ public class IntroActivity extends AppCompatActivity {
         if (Storage.needToShowIntro()) {
             setContentView(R.layout.activity_intro);
             Disposable disposable = Completable.complete()
-                    .delay(10, TimeUnit.SECONDS)
+                    .delay(3, TimeUnit.SECONDS)
                     .subscribe(this::startSecondActivity);
             mCompositeDisposable.add(disposable);
         } else {

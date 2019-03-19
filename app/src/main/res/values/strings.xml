@@ -21,6 +21,7 @@
     <string name="telegram">https://t.me/EvgeniyKam</string>
     <string name="vk">https://vk.com/id270708</string>
     <string name="github">https://github.com/jonart</string>
+    <string name="internet_connection">Internet is not available</string>
 
 
     <array name="category_array">

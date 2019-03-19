@@ -16,7 +16,7 @@ public class App extends Application {
         super.onCreate();
 
         mSharedPref = new SharedPref(getApplicationContext());
-        mApi =  new RestApi().getApi();
+        mApi =  RestApi.getInstance().getApi();
     }
 
     public static SharedPref getSharedPref() {

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 import ru.evgeniy.androidacademy.App;
 import ru.evgeniy.androidacademy.R;
 import ru.evgeniy.androidacademy.data.NewsItem;
+import ru.evgeniy.androidacademy.data.network.RestApi;
 
 public class NewsListActivity extends AppCompatActivity implements MyClickListener {
     private final int SPAN_COUNT = 2;
@@ -122,17 +124,15 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
                     }, throwable -> showProgressBar(false));
         }
         else {
-            //Snackbar.make(this, R Snackbar.LENGTH_LONG).show();
-            Toast.makeText(this, "Internet is not available", Toast.LENGTH_SHORT).show();
+           // Snackbar.make(this, R.string.internet_connection ,Snackbar.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.internet_connection, Toast.LENGTH_SHORT).show();
         }
     }
 
 
     private void showProgressBar(boolean isTrue){
-        if (isTrue){
-            mProgressBar.setVisibility(View.VISIBLE);
-        }
-        mProgressBar.setVisibility(View.INVISIBLE);
+        if (isTrue) mProgressBar.setVisibility(View.VISIBLE);
+        else mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     private void showNews(MyClickListener myClickListener){
@@ -145,7 +145,8 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
 
     @Override
     public void onItemClick(NewsItem item) {
-        Intent intent = NewsDetailActivity.getStartIntent(this);
+        //Intent intent = NewsDetailActivity.getStartIntent(this);
+        Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra(NewsDetailActivity.URL, item.getUrl());
         startActivity(intent);
         Log.d(TAG, "onCreate: click");
