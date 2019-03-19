@@ -25,7 +25,7 @@ public class RestApi {
         return restApi;
     }
 
-    private RestApi(){
+    public RestApi(){
         final OkHttpClient okHttpClient = buildOkHttpClient();
         final Retrofit retrofit = buildRetrofit(okHttpClient);
         mApi = retrofit.create(Api.class);

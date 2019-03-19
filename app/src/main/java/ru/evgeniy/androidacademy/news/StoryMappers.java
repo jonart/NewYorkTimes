@@ -13,7 +13,6 @@ import ru.evgeniy.androidacademy.data.network.dto.MultimediaDTO;
 import ru.evgeniy.androidacademy.data.network.dto.NewsDTO;
 
 public class StoryMappers {
-    private static final String MULTIMEDIA_TYPE_IMAGE = "image";
 
     private StoryMappers() {
         throw new AssertionError("Must be no instance");

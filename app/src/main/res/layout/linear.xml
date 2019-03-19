@@ -106,17 +106,17 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/ib_first"
+            android:id="@+id/ib_telegram"
             style="@style/iv_button"
             android:src="@drawable/ic_telegram_28dp" />
 
         <ImageButton
-            android:id="@+id/ib_second"
+            android:id="@+id/ib_vk"
             style="@style/iv_button"
             android:src="@drawable/vk" />
 
         <ImageButton
-            android:id="@+id/ib_third"
+            android:id="@+id/ib_github"
             style="@style/iv_button"
             android:src="@drawable/github" />
     </LinearLayout>

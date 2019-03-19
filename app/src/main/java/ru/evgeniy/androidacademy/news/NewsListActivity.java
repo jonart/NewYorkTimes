@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,14 +26,19 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import ru.evgeniy.androidacademy.App;
 import ru.evgeniy.androidacademy.R;
 import ru.evgeniy.androidacademy.data.NewsItem;
-import ru.evgeniy.androidacademy.data.network.RestApi;
 
 public class NewsListActivity extends AppCompatActivity implements MyClickListener {
+    private final int SPAN_COUNT = 2;
+    private final int SPACING = 16;
+    private final String DEFAULT_CATEGORY = "Home";
+
     private RecyclerView mRecycler;
     private ProgressBar mProgressBar;
     private Disposable mDisposable;
+
     public static final String TAG = "MYTAG";
     List<NewsItem> news = new ArrayList<>();
 
@@ -51,10 +54,10 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         } else {
-            mRecycler.setLayoutManager(new GridLayoutManager(this, 2));
+            mRecycler.setLayoutManager(new GridLayoutManager(this, SPAN_COUNT));
         }
 
-        mRecycler.addItemDecoration(new ItemDecorator(16));
+        mRecycler.addItemDecoration(new ItemDecorator(SPACING));
 
     }
 
@@ -89,7 +92,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         return super.onOptionsItemSelected(item);
     }
     private void initCategory(){
-        loadData("Home".toLowerCase());
+        loadData(DEFAULT_CATEGORY.toLowerCase());
     }
 
     public boolean isOnline(){
@@ -104,10 +107,10 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     }
 
     public void loadData(String category){
-        if (category.contains(" ")) {category = category.replace(" ", "");}
+        category = category.replace(" ", "");
         if (isOnline()) {
             showProgressBar(true);
-            mDisposable = RestApi.getInstance().getApi()
+            mDisposable = App.getRestApi()
                     .get(category)
                     .map(responseStory -> StoryMappers.map(responseStory.getResults()))
                     .subscribeOn(Schedulers.io())
@@ -116,9 +119,10 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
                         news = responseStory;
                         showProgressBar(false);
                         showNews(this);
-                    }, Throwable::printStackTrace);
+                    }, throwable -> showProgressBar(false));
         }
         else {
+            //Snackbar.make(this, R Snackbar.LENGTH_LONG).show();
             Toast.makeText(this, "Internet is not available", Toast.LENGTH_SHORT).show();
         }
     }
@@ -141,7 +145,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
 
     @Override
     public void onItemClick(NewsItem item) {
-        Intent intent = new Intent(NewsListActivity.this, NewsDetailActivity.class);
+        Intent intent = NewsDetailActivity.getStartIntent(this);
         intent.putExtra(NewsDetailActivity.URL, item.getUrl());
         startActivity(intent);
         Log.d(TAG, "onCreate: click");

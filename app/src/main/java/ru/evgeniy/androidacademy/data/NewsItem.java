@@ -36,11 +36,6 @@ public class NewsItem {
         return publishDate;
     }
 
-//    public String getPublishDate(String dateFormatString) {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormatString);
-//        return simpleDateFormat.format(publishDate);
-//    }
-
     public String getPreviewText() {
         return previewText;
     }

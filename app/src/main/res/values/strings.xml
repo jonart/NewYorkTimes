@@ -18,6 +18,9 @@
     <string name="student_android_academy">Student Android Academy</string>
     <string name="disclaimer">© 2018 Evgeniy Kamyshnikov</string>
     <string name="menu_action_switch">Switch</string>
+    <string name="telegram">https://t.me/EvgeniyKam</string>
+    <string name="vk">https://vk.com/id270708</string>
+    <string name="github">https://github.com/jonart</string>
 
 
     <array name="category_array">

@@ -1,5 +1,7 @@
 package ru.evgeniy.androidacademy.news;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebSettings;
@@ -23,9 +25,11 @@ public class NewsDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_detail);
 
         WebView webView = findViewById(R.id.webView);
-//        WebSettings webSettings = mWebView.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
         webView.loadUrl(getIntent().getStringExtra(URL));
 
+    }
+
+    public static Intent getStartIntent(Context context) {
+        return new Intent(context, NewsListActivity.class);
     }
 }

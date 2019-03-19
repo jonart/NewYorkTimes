@@ -25,9 +25,9 @@ import ru.evgeniy.androidacademy.R;
 public class AboutActivity extends AppCompatActivity {
 
     private LinearLayout mLinearLayout;
-    private ImageButton mImBtn1, mImBtn2, mImBtn3;
-    private Button mButton;
-    private EditText mEditText;
+    private ImageButton mImBtnTelegram, mImBtnVk, mImBtnGit;
+    private Button mButtonSendComment;
+    private EditText mEditTextMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,25 +35,25 @@ public class AboutActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about);
         init();
 
-        mImBtn1.setOnClickListener(view -> openLink("https://t.me/EvgeniyKam"));
-        mImBtn2.setOnClickListener(view -> openLink("https://vk.com/id270708"));
-        mImBtn3.setOnClickListener(view -> openLink("https://github.com/jonart"));
-        mButton.setOnClickListener(view -> { if (isEmpty()) sendMessage();});
+        mImBtnTelegram.setOnClickListener(view -> openLink(getString(R.string.telegram)));
+        mImBtnVk.setOnClickListener(view -> openLink(getString(R.string.vk)));
+        mImBtnGit.setOnClickListener(view -> openLink(getString(R.string.github)));
+        mButtonSendComment.setOnClickListener(view -> { if (isEmpty()) sendMessage();});
         createTextView();
     }
 
     private void init() {
-        mImBtn1 = findViewById(R.id.ib_first);
-        mImBtn2 = findViewById(R.id.ib_second);
-        mImBtn3 = findViewById(R.id.ib_third);
-        mButton = findViewById(R.id.btn_send_comment);
+        mImBtnTelegram = findViewById(R.id.ib_telegram);
+        mImBtnVk = findViewById(R.id.ib_vk);
+        mImBtnGit = findViewById(R.id.ib_github);
+        mButtonSendComment = findViewById(R.id.btn_send_comment);
         mLinearLayout = findViewById(R.id.my_linear);
-        mEditText = findViewById(R.id.et_message);
+        mEditTextMessage = findViewById(R.id.et_message);
     }
 
 
     private boolean isEmpty() {
-        return !mEditText.getText().toString().isEmpty();
+        return !mEditTextMessage.getText().toString().isEmpty();
     }
 
     private void openLink(String link) {
@@ -71,7 +71,7 @@ public class AboutActivity extends AppCompatActivity {
         intent.setData(Uri.parse("mailto:"));
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"jonart2008@gmail.com"});
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.Subject));
-        intent.putExtra(Intent.EXTRA_TEXT, mEditText.getText().toString());
+        intent.putExtra(Intent.EXTRA_TEXT, mEditTextMessage.getText().toString());
         if (isEmailInstalled(getApplicationContext())) {
             startActivity(Intent.createChooser(intent, getString(R.string.are_you_want)));
         } else {

@@ -20,7 +20,7 @@ public class SharedPref {
             return true;
         }
         else {
-            mSharedPreferences.edit().putBoolean(FIRST_LAUNCH, true);
+            mSharedPreferences.edit().putBoolean(FIRST_LAUNCH, true).commit();
             return false;
         }
     }
