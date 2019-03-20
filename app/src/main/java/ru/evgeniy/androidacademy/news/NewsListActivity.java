@@ -17,30 +17,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import ru.evgeniy.androidacademy.App;
 import ru.evgeniy.androidacademy.R;
-import ru.evgeniy.androidacademy.data.NewsItem;
-import ru.evgeniy.androidacademy.data.network.RestApi;
+import ru.evgeniy.androidacademy.data.db.NewsDao;
+import ru.evgeniy.androidacademy.data.db.NewsItem;
 
 public class NewsListActivity extends AppCompatActivity implements MyClickListener {
     private final int SPAN_COUNT = 2;
     private final int SPACING = 16;
     private final String DEFAULT_CATEGORY = "Home";
 
-    private RecyclerView mRecycler;
-    private ProgressBar mProgressBar;
-    private Disposable mDisposable;
 
+    @BindView(R.id.activity_news_recycler) RecyclerView mRecycler;
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.ll_news_list) LinearLayout mLinearLayout;
+
+    private Disposable mDisposable;
     public static final String TAG = "MYTAG";
     List<NewsItem> news = new ArrayList<>();
 
@@ -48,8 +54,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
-        mProgressBar = findViewById(R.id.progress_bar);
-        mRecycler = findViewById(R.id.activity_news_recycler);
+        ButterKnife.bind(this);
         initCategory();
 
         if (isVertical()) {
@@ -71,9 +76,11 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         Spinner spinner = (Spinner) item.getActionView();
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        spinner.setAdapter(adapter);
+//        spinner.setAdapter(new ArrayAdapter<Category>(this, R.layout.support_simple_spinner_dropdown_item, Category.values()));
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
@@ -116,16 +123,21 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
                     .get(category)
                     .map(responseStory -> StoryMappers.map(responseStory.getResults()))
                     .subscribeOn(Schedulers.io())
+                    .doOnSuccess(newsItems -> getNewsDao().insertNewss(newsItems))
                     .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorReturn(throwable -> {
+                        news = getNewsDao().getNews();
+                        return news;
+                    })
+                    .doFinally(() -> showNews(NewsListActivity.this))
                     .subscribe(responseStory -> {
                         news = responseStory;
                         showProgressBar(false);
-                        showNews(this);
+                        //showNews(this);
                     }, throwable -> showProgressBar(false));
         }
         else {
-           // Snackbar.make(this, R.string.internet_connection ,Snackbar.LENGTH_LONG).show();
-            Toast.makeText(this, R.string.internet_connection, Toast.LENGTH_SHORT).show();
+            Snackbar.make(mLinearLayout, R.string.internet_connection ,Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -150,6 +162,10 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         intent.putExtra(NewsDetailActivity.URL, item.getUrl());
         startActivity(intent);
         Log.d(TAG, "onCreate: click");
+    }
+
+    public NewsDao getNewsDao(){
+    return ((App)getApplication()).getDatabase().getNewsDao();
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.text.SimpleDateFormat;
 
 import ru.evgeniy.androidacademy.R;
-import ru.evgeniy.androidacademy.data.NewsItem;
+import ru.evgeniy.androidacademy.data.db.NewsItem;
 
 public class NewsHolder extends RecyclerView.ViewHolder {
     private final TextView mCategory;
@@ -41,10 +41,19 @@ public class NewsHolder extends RecyclerView.ViewHolder {
         mTitle.setText(item.getTitle());
         mText.setText(item.getFullText());
         mDate.setText(item.getPublishDate());
-        Glide.with(mImageView)
-                .load(item.getImageUrl())
-                .apply(RequestOptions.centerCropTransform())
-                .into(mImageView);
+        if (item.getImageUrl() == null){
+            Glide.with(mImageView)
+                    .load(R.drawable.notavailable)
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(mImageView);
+        }
+        else {
+            Glide.with(mImageView)
+                    .load(item.getImageUrl())
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(mImageView);
+        }
+
         itemView.setOnClickListener(view -> onClick.onItemClick(item));
     }
 }

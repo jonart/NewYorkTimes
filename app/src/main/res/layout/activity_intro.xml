@@ -3,18 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.IntroActivity">
+    android:background="@color/background"
+    tools:context=".Activity.IntroActivity"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
     <ImageView
+        android:layout_weight="0.5"
+        android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:src="@drawable/device"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:text="@string/welcome"/>
 
 </LinearLayout>

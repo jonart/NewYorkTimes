@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import ru.evgeniy.androidacademy.data.NewsItem;
+import ru.evgeniy.androidacademy.data.db.NewsItem;
 import ru.evgeniy.androidacademy.data.network.dto.MultimediaDTO;
 import ru.evgeniy.androidacademy.data.network.dto.NewsDTO;
 

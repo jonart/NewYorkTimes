@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ru.evgeniy.androidacademy.R;
-import ru.evgeniy.androidacademy.data.NewsItem;
+import ru.evgeniy.androidacademy.data.db.NewsItem;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> {
 

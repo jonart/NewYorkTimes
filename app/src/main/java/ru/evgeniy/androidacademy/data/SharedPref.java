@@ -15,8 +15,9 @@ public class SharedPref {
 
 
     public boolean needToShowIntro() {
-        boolean start = mSharedPreferences.getBoolean(FIRST_LAUNCH, false);
+        boolean start = mSharedPreferences.getBoolean(FIRST_LAUNCH, true);
         if (start){
+            mSharedPreferences.edit().putBoolean(FIRST_LAUNCH, false).apply();
             return true;
         }
         else {

@@ -15,6 +15,7 @@ import ru.evgeniy.androidacademy.data.SharedPref;
 import ru.evgeniy.androidacademy.news.NewsListActivity;
 
 public class IntroActivity extends AppCompatActivity {
+    public static final int DELAY_TIME = 3;
 
     SharedPref Storage = App.getSharedPref();
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
@@ -25,7 +26,7 @@ public class IntroActivity extends AppCompatActivity {
         if (Storage.needToShowIntro()) {
             setContentView(R.layout.activity_intro);
             Disposable disposable = Completable.complete()
-                    .delay(3, TimeUnit.SECONDS)
+                    .delay(DELAY_TIME, TimeUnit.SECONDS)
                     .subscribe(this::startSecondActivity);
             mCompositeDisposable.add(disposable);
         } else {
