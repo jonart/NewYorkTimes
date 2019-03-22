@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ru.evgeniy.androidacademy.R;
-import ru.evgeniy.androidacademy.data.db.NewsItem;
+import ru.evgeniy.androidacademy.data.db.NewsEntity;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> {
 
-    private List<NewsItem> items;
+    private List<NewsEntity> items;
     private final MyClickListener onClick;
 
     NewsAdapter(MyClickListener onClick) {
         this.onClick = onClick;
     }
 
-    void setItems(List<NewsItem> items) {
+    void setItems(List<NewsEntity> items) {
         this.items = items;
     }
 

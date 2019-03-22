@@ -9,7 +9,7 @@ import java.io.Serializable;
 import io.reactivex.annotations.NonNull;
 
 @Entity(tableName = "news")
-public class NewsItem implements Serializable {
+public class NewsEntity implements Serializable {
 
     @NonNull
     @PrimaryKey(autoGenerate = true)
@@ -37,7 +37,7 @@ public class NewsItem implements Serializable {
     @ColumnInfo(name = "url")
     private String url;
 
-    public NewsItem(String title, String imageUrl, String category, String publishDate, String previewText, String fullText, String url) {
+    public NewsEntity(String title, String imageUrl, String category, String publishDate, String previewText, String fullText, String url) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.category = category;

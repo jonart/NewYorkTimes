@@ -25,6 +25,33 @@
     <string name="welcome">Welcome!</string>
 
 
+    <string name="category_home">Home</string>
+    <string name="category_opinion">Opinion</string>
+    <string name="category_world">World</string>
+    <string name="category_national">National</string>
+    <string name="category_politics">Politics</string>
+    <string name="category_upshot">Upshot</string>
+    <string name="category_nyregion">NY region</string>
+    <string name="category_business">Business</string>
+    <string name="category_technology">Technology</string>
+    <string name="category_science">Science</string>
+    <string name="category_health">Health</string>
+    <string name="category_sports">Sports</string>
+    <string name="category_arts">Arts</string>
+    <string name="category_books">Books</string>
+    <string name="category_movies">Movies</string>
+    <string name="category_theater">Theater</string>
+    <string name="category_sundayreview">Sunday review</string>
+    <string name="category_fashion">Fashion</string>
+    <string name="category_tmagazine">T-magazine</string>
+    <string name="category_food">Food</string>
+    <string name="category_travel">Travel</string>
+    <string name="category_magazine">Magazine</string>
+    <string name="category_realestate">Real estate</string>
+    <string name="category_automobiles">Automobiles</string>
+    <string name="category_obituaries">Obituaries</string>
+    <string name="category_insider">Insider</string>
+
     <array name="category_array">
         <item name="category_home">Home</item>
         <item name="category_opinion">Opinion</item>

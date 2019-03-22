@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.text.SimpleDateFormat;
 
 import ru.evgeniy.androidacademy.R;
-import ru.evgeniy.androidacademy.data.db.NewsItem;
+import ru.evgeniy.androidacademy.data.db.NewsEntity;
 
 public class NewsHolder extends RecyclerView.ViewHolder {
     private final TextView mCategory;
@@ -36,7 +36,7 @@ public class NewsHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bind(NewsItem item, MyClickListener onClick) {
+    public void bind(NewsEntity item, MyClickListener onClick) {
         mCategory.setText(item.getCategory());
         mTitle.setText(item.getTitle());
         mText.setText(item.getFullText());
