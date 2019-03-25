@@ -1,6 +1,7 @@
 package ru.evgeniy.androidacademy.Activity;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -16,12 +17,12 @@ import ru.evgeniy.androidacademy.news.NewsListActivity;
 
 public class IntroActivity extends AppCompatActivity {
     public static final int DELAY_TIME = 3;
-
-    SharedPref Storage = App.getSharedPref();
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
+    SharedPref Storage = App.getSharedPref();
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Storage.needToShowIntro()) {
             setContentView(R.layout.activity_intro);

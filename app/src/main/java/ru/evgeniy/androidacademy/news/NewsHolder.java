@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
 import ru.evgeniy.androidacademy.R;
 import ru.evgeniy.androidacademy.data.db.NewsEntity;
 
-public class NewsHolder extends RecyclerView.ViewHolder {
+class NewsHolder extends RecyclerView.ViewHolder {
     private final TextView mCategory;
     private final TextView mTitle;
     private final TextView mText;
@@ -26,7 +26,7 @@ public class NewsHolder extends RecyclerView.ViewHolder {
     SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 
-    public NewsHolder(@NonNull View item) {
+    NewsHolder(@NonNull View item) {
         super(item);
         mCategory = item.findViewById(R.id.item_news_layout_recycler_category);
         mTitle = item.findViewById(R.id.item_news_layout_recycler_title);
@@ -36,7 +36,7 @@ public class NewsHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bind(NewsEntity item, MyClickListener onClick) {
+    void bind(NewsEntity item, MyClickListener onClick) {
         mCategory.setText(item.getCategory());
         mTitle.setText(item.getTitle());
         mText.setText(item.getFullText());

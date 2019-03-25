@@ -37,7 +37,7 @@ public class NewsEntity implements Serializable {
     @ColumnInfo(name = "url")
     private String url;
 
-    public NewsEntity(String title, String imageUrl, String category, String publishDate, String previewText, String fullText, String url) {
+    public NewsEntity(@NonNull String title, @NonNull String imageUrl, @NonNull String category, @NonNull String publishDate,@NonNull  String previewText,@NonNull  String fullText, @NonNull String url) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.category = category;
@@ -49,63 +49,70 @@ public class NewsEntity implements Serializable {
 
     public int getId(){return id;}
 
+    @NonNull
     public String getTitle() {
         return title;
     }
 
+    @NonNull
     public String getImageUrl() {
         return imageUrl;
     }
 
+    @NonNull
     public String getCategory() {
         return category;
     }
 
+    @NonNull
     public String getPublishDate() {
         return publishDate;
     }
 
+    @NonNull
     public String getPreviewText() {
         return previewText;
     }
 
+    @NonNull
     public String getFullText() {
         return fullText;
     }
 
+    @NonNull
     public String getUrl() {
         return url;
     }
 
-    public void setId(int id) {
+    public void setId(@NonNull int id) {
         this.id = id;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(@NonNull String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(@NonNull String category) {
         this.category = category;
     }
 
-    public void setPublishDate(String publishDate) {
+    public void setPublishDate(@NonNull String publishDate) {
         this.publishDate = publishDate;
     }
 
-    public void setPreviewText(String previewText) {
+    public void setPreviewText(@NonNull String previewText) {
         this.previewText = previewText;
     }
 
-    public void setFullText(String fullText) {
+    public void setFullText(@NonNull String fullText) {
         this.fullText = fullText;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(@NonNull String url) {
         this.url = url;
     }
 }

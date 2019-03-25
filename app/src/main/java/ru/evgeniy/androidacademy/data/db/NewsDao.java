@@ -7,10 +7,6 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import io.reactivex.Completable;
-import io.reactivex.Flowable;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 @Dao
@@ -26,7 +22,7 @@ public interface NewsDao {
     List<NewsEntity> getNews();
 
     @Query("SELECT * FROM news WHERE id = :id")
-    Flowable<NewsEntity> getNewsById(int id);
+    Single<NewsEntity> getNewsById(int id);
 
     @Query("DELETE FROM news")
     void deleteAllNews();

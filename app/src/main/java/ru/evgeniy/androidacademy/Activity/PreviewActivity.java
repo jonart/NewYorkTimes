@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -18,13 +20,12 @@ import ru.evgeniy.androidacademy.R;
 
 public class PreviewActivity extends AppCompatActivity {
     public String EMAIL_KEY = "EMAIL_KEY";
-
     private TextView mTextView;
     private Button mButton;
     private String text;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview);
 
@@ -54,15 +55,12 @@ public class PreviewActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.no_apps_email, Toast.LENGTH_LONG).show();
     }
 
-    public boolean isEmailInstalled(Context context){
+    public boolean isEmailInstalled(@NonNull Context context){
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         final PackageManager packageManager = context.getPackageManager();
         List<ResolveInfo> list = packageManager.queryIntentActivities(intent, 0);
 
-        if(list.size() == 0)
-            return false;
-        else
-            return true;
+        return list.size() != 0;
     }
 }

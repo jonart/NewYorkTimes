@@ -15,11 +15,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> {
     private List<NewsEntity> items;
     private final MyClickListener onClick;
 
-    NewsAdapter(MyClickListener onClick) {
+    NewsAdapter(@NonNull MyClickListener onClick) {
         this.onClick = onClick;
     }
 
-    void setItems(List<NewsEntity> items) {
+    void setItems(@NonNull List<NewsEntity> items) {
         this.items = items;
     }
 

@@ -6,7 +6,6 @@ import android.arch.persistence.room.Room;
 import com.facebook.stetho.Stetho;
 
 import ru.evgeniy.androidacademy.data.SharedPref;
-import ru.evgeniy.androidacademy.data.db.NewsDao;
 import ru.evgeniy.androidacademy.data.db.NewsDatabase;
 import ru.evgeniy.androidacademy.data.network.Api;
 import ru.evgeniy.androidacademy.data.network.RestApi;

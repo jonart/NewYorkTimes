@@ -29,7 +29,7 @@ public class StoryMappers {
         return Collections.unmodifiableList(items);
     }
 
-
+    @NonNull
     private static NewsEntity toDatabaseType(@NonNull NewsDTO dto) {
          String title = dto.getTitle();
 
@@ -51,7 +51,7 @@ public class StoryMappers {
 
     @Nullable
     private static String mapImage(@Nullable List<MultimediaDTO> multimedias) {
-//
+
         if (multimedias != null && !multimedias.isEmpty()) {
             return multimedias.get(multimedias.size()-1).getUrl();
         }

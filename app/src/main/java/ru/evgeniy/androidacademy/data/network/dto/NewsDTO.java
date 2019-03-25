@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+
 public class NewsDTO {
     /**
      * section : World
@@ -41,52 +43,57 @@ public class NewsDTO {
     @SerializedName("url")
     private String url;
 
+    @NonNull
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(@NonNull String url) {
         this.url = url;
     }
 
+    @NonNull
     public String getSubsection() {
         return subsection;
     }
 
-    public void setSubsection(String subsection) {
+    public void setSubsection(@NonNull String subsection) {
         this.subsection = subsection;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
+    @NonNull
     public String getAbstractX() {
         return abstractX;
     }
 
-    public void setAbstractX(String abstractX) {
+    public void setAbstractX(@NonNull String abstractX) {
         this.abstractX = abstractX;
     }
 
-
+    @NonNull
     public String getPublished_date() {
         return published_date;
     }
 
-    public void setPublished_date(String published_date) {
+    public void setPublished_date(@NonNull String published_date) {
         this.published_date = published_date;
     }
 
+    @NonNull
     public List<MultimediaDTO> getMultimedia() {
         return multimedia;
     }
 
-    public void setMultimedia(List<MultimediaDTO> multimedia) {
+    public void setMultimedia(@NonNull List<MultimediaDTO> multimedia) {
         this.multimedia = multimedia;
     }
 }

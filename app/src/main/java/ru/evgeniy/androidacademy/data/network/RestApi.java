@@ -27,12 +27,19 @@ public class RestApi {
         return restApi;
     }
 
-    public RestApi(){
+    @NonNull
+    public Api getApi(){
+        return mApi;
+    }
+
+
+    private RestApi(){
         final OkHttpClient okHttpClient = buildOkHttpClient();
         final Retrofit retrofit = buildRetrofit(okHttpClient);
         mApi = retrofit.create(Api.class);
     }
 
+    @NonNull
     private OkHttpClient buildOkHttpClient(){
         return new OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.SECONDS)
@@ -41,6 +48,8 @@ public class RestApi {
                 .build();
     }
 
+
+    @NonNull
     private Retrofit buildRetrofit(@NonNull OkHttpClient client){
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.SERVER_URL)
@@ -48,10 +57,5 @@ public class RestApi {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-    }
-
-    @NonNull
-    public Api getApi(){
-        return mApi;
     }
 }

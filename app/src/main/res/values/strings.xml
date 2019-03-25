@@ -52,6 +52,7 @@
     <string name="category_obituaries">Obituaries</string>
     <string name="category_insider">Insider</string>
     <string name="delete">Удалить</string>
+    <string name="email_send">jonart2008@gmail.com</string>
 
     <array name="category_array">
         <item name="category_home">Home</item>

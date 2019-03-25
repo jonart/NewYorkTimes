@@ -6,6 +6,8 @@ import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,37 +42,26 @@ import ru.evgeniy.androidacademy.data.db.NewsDao;
 import ru.evgeniy.androidacademy.data.db.NewsEntity;
 
 public class NewsListActivity extends AppCompatActivity implements MyClickListener {
+    public static final String TAG = "MYTAG";
     private final int SPAN_COUNT = 2;
     private final int SPACING = 16;
-    private final String DEFAULT_CATEGORY = "Home";
     private Spinner mSpinner;
     private String nowCategory = "";
-
-
-    @BindView(R.id.activity_news_recycler)
-    RecyclerView mRecycler;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
-    @BindView(R.id.coordinator_layout_news)
-    CoordinatorLayout mCoordinatorLayout;
-    @BindView(R.id.fab)
-    FloatingActionButton mFloatingActionButton;
-    @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
-
     private Disposable mDisposable;
-    public static final String TAG = "MYTAG";
-    List<NewsEntity> news = new ArrayList<>();
-    Map<String, Integer> listCategory = new HashMap<>();
+    private List<NewsEntity> news = new ArrayList<>();
+
+
+    @BindView(R.id.activity_news_recycler) RecyclerView mRecycler;
+    @BindView(R.id.progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.coordinator_layout_news) CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.fab) FloatingActionButton mFloatingActionButton;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         ButterKnife.bind(this);
-        for (int i = 0; i < Category.values().length; i++) {
-            listCategory.put(Category.values()[i].serverValue(), Category.values()[i].displayValue());
-        }
 
         if (isVertical()) {
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -78,7 +69,6 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
             mRecycler.setLayoutManager(new GridLayoutManager(this, SPAN_COUNT));
         }
         mRecycler.addItemDecoration(new ItemDecorator(SPACING));
-
 
         mFloatingActionButton.setOnClickListener(view -> loadData(nowCategory));
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
@@ -95,11 +85,15 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         MenuItem item = menu.findItem(R.id.spinner_menu);
         mSpinner = (Spinner) item.getActionView();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_array, android.R.layout.simple_spinner_item);
-        mSpinner.setAdapter(adapter);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        List<String> categoryList = new ArrayList<>();
+        for (Category category : Category.values())
+        {
+            categoryList.add(category.serverValue());
+        }
 
-//        spinner.setAdapter(new ArrayAdapter<Category>(this, R.layout.support_simple_spinner_dropdown_item, Category.values()));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item,categoryList);
+
+        mSpinner.setAdapter(adapter);
 
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -121,6 +115,20 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mDisposable.dispose();
+    }
+
+
+    @Override
+    public void onItemClick(@NonNull NewsEntity item) {
+        Intent intent = NewsDetailActivity.getStartIntent(this,item.getId());
+        startActivity(intent);
+        Log.d(TAG, "onCreate: click");
+    }
+
     public boolean isOnline() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -132,7 +140,12 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         return orientation != Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    public void loadData(String category) {
+    @NonNull
+    public NewsDao getNewsDao() {
+        return ((App) getApplication()).getDatabase().getNewsDao();
+    }
+
+    public void loadData(@NonNull String category) {
         category = category.replace(" ", "");
         if (isOnline()) {
             showProgressBar(true);
@@ -147,9 +160,9 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .onErrorReturn(throwable -> news = getNewsDao().getNews())
-                    .doFinally(this::showNews)
                     .subscribe(responseStory -> {
                         showProgressBar(false);
+                        showNews();
                     }, throwable -> showProgressBar(false));
         } else {
             Snackbar.make(mCoordinatorLayout, R.string.internet_connection, Snackbar.LENGTH_LONG).show();
@@ -168,24 +181,5 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         mAdapter.setItems(news);
         mProgressBar.setVisibility(View.GONE);
         mRecycler.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onItemClick(NewsEntity item) {
-        //Intent intent = NewsDetailActivity.getStartIntent(this);
-        Intent intent = new Intent(this, NewsDetailActivity.class);
-        intent.putExtra(NewsDetailActivity.ID_NEWS, item.getId());
-        startActivity(intent);
-        Log.d(TAG, "onCreate: click");
-    }
-
-    public NewsDao getNewsDao() {
-        return ((App) getApplication()).getDatabase().getNewsDao();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mDisposable.dispose();
     }
 }
