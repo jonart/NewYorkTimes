@@ -3,6 +3,8 @@ package ru.evgeniy.androidacademy;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 
+import com.facebook.stetho.Stetho;
+
 import ru.evgeniy.androidacademy.data.SharedPref;
 import ru.evgeniy.androidacademy.data.db.NewsDao;
 import ru.evgeniy.androidacademy.data.db.NewsDatabase;
@@ -18,6 +20,8 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Stetho.initializeWithDefaults(this);
 
         mSharedPref = new SharedPref(getApplicationContext());
         mApi =  RestApi.getInstance().getApi();

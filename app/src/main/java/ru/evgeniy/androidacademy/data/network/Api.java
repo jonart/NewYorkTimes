@@ -10,5 +10,5 @@ import ru.evgeniy.androidacademy.data.network.dto.Response;
 public interface Api {
 
     @GET("topstories/v2/{section}.json")
-    Single<Response> get(@Path("section") @NonNull String section);
+    Single<Response> getNews(@Path("section") @NonNull String section);
 }

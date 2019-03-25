@@ -51,6 +51,7 @@
     <string name="category_automobiles">Automobiles</string>
     <string name="category_obituaries">Obituaries</string>
     <string name="category_insider">Insider</string>
+    <string name="delete">Удалить</string>
 
     <array name="category_array">
         <item name="category_home">Home</item>

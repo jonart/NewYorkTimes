@@ -137,20 +137,19 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         if (isOnline()) {
             showProgressBar(true);
             mDisposable = App.getRestApi()
-                    .get(category)
+                    .getNews(category)
                     .map(responseStory -> StoryMappers.map(responseStory.getResults()))
                     .subscribeOn(Schedulers.io())
-                    .doOnSuccess(newsItems -> getNewsDao().insertAllNews(newsItems))
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(throwable -> {
+                    .doOnSuccess(newsItems -> {
+                        getNewsDao().deleteAllNews();
+                        getNewsDao().insertAllNews(newsItems);
                         news = getNewsDao().getNews();
-                        return news;
                     })
-                    .doFinally(() -> showNews(NewsListActivity.this))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorReturn(throwable -> news = getNewsDao().getNews())
+                    .doFinally(this::showNews)
                     .subscribe(responseStory -> {
-                        news = responseStory;
                         showProgressBar(false);
-                        //showNews(this);
                     }, throwable -> showProgressBar(false));
         } else {
             Snackbar.make(mCoordinatorLayout, R.string.internet_connection, Snackbar.LENGTH_LONG).show();
@@ -163,8 +162,8 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         else mProgressBar.setVisibility(View.INVISIBLE);
     }
 
-    private void showNews(MyClickListener myClickListener) {
-        NewsAdapter mAdapter = new NewsAdapter(myClickListener);
+    private void showNews() {
+        NewsAdapter mAdapter = new NewsAdapter(NewsListActivity.this);
         mRecycler.setAdapter(mAdapter);
         mAdapter.setItems(news);
         mProgressBar.setVisibility(View.GONE);
@@ -175,7 +174,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     public void onItemClick(NewsEntity item) {
         //Intent intent = NewsDetailActivity.getStartIntent(this);
         Intent intent = new Intent(this, NewsDetailActivity.class);
-        intent.putExtra(NewsDetailActivity.URL, item.getUrl());
+        intent.putExtra(NewsDetailActivity.ID_NEWS, item.getId());
         startActivity(intent);
         Log.d(TAG, "onCreate: click");
     }
