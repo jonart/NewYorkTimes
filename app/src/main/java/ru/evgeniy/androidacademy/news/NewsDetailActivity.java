@@ -79,7 +79,7 @@ public class NewsDetailActivity extends AppCompatActivity {
 
     @NonNull
     public NewsDao getNewsDao() {
-        return ((App) getApplication()).getDatabase().getNewsDao();
+        return App.getDatabase().getNewsDao();
     }
 
     private void loadNews(int id) {

@@ -14,7 +14,7 @@ public class App extends Application {
 
     private static SharedPref mSharedPref;
     private static Api mApi;
-    private NewsDatabase mDatabase;
+    private static NewsDatabase mDatabase;
 
     @Override
     public void onCreate() {
@@ -37,7 +37,7 @@ public class App extends Application {
         return mApi;
     }
 
-    public NewsDatabase getDatabase(){
+    public static NewsDatabase getDatabase(){
         return mDatabase;
     }
 }

@@ -142,7 +142,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
 
     @NonNull
     public NewsDao getNewsDao() {
-        return ((App) getApplication()).getDatabase().getNewsDao();
+        return App.getDatabase().getNewsDao();
     }
 
     public void loadData(@NonNull String category) {
