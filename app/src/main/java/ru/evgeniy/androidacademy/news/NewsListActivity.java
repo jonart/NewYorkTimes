@@ -30,8 +30,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import ru.evgeniy.androidacademy.App;
 import ru.evgeniy.androidacademy.R;
@@ -61,7 +65,6 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_list);
         ButterKnife.bind(this);
-
         if (isVertical()) {
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
         } else {
@@ -72,9 +75,8 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         mFloatingActionButton.setOnClickListener(view -> loadData(nowCategory));
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(false);
-           loadData(nowCategory);
+           reloadNews();
         });
-
     }
 
     @Override
@@ -89,9 +91,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         {
             categoryList.add(category.serverValue());
         }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item,categoryList);
-
         mSpinner.setAdapter(adapter);
 
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -101,7 +101,6 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
                 nowCategory = name.toLowerCase();
                 Log.d(TAG, "onItemSelected: " + name);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -115,11 +114,16 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        mDisposable.dispose();
+    protected void onResume() {
+        reloadNews();
+        super.onResume();
     }
 
+    @Override
+    protected void onStop() {
+        mDisposable.dispose();
+        super.onStop();
+    }
 
     @Override
     public void onItemClick(@NonNull NewsEntity item) {
@@ -142,6 +146,17 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     @NonNull
     public NewsDao getNewsDao() {
         return App.getDatabase().getNewsDao();
+    }
+
+    public void reloadNews(){
+        mDisposable = Single.fromCallable(()-> getNewsDao().getNews())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(newsEntities -> {
+                    if (news != null) news.clear();
+                    news = newsEntities;
+                    showNews();
+                });
     }
 
     public void loadData(@NonNull String category) {
