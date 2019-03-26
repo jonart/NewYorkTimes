@@ -19,14 +19,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> {
         this.onClick = onClick;
     }
 
-    void setItems(@NonNull List<NewsEntity> items) {
+    void addData(@NonNull List<NewsEntity> items) {
+        if (this.items != null){this.items.clear();}
         this.items = items;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 2) return 2;
-        else return 1;
+        notifyDataSetChanged();
     }
 
     @NonNull

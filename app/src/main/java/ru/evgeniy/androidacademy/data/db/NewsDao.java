@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
@@ -14,9 +15,12 @@ public interface NewsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllNews(List<NewsEntity> news);
-    
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertNews(NewsEntity newsEntity);
+
+    @Query("UPDATE news SET title = :title, fullText=:fullText WHERE id = :id")
+    void updateNewsById(int id, String title, String fullText);
 
     @Query("SELECT * FROM news")
     List<NewsEntity> getNews();

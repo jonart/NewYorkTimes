@@ -27,12 +27,16 @@ import ru.evgeniy.androidacademy.data.db.NewsDao;
 public class NewsDetailActivity extends AppCompatActivity {
 
     public static final String ID_NEWS = "ID_NEWS";
+    public static final int REQUEST_CODE = 1;
     private Disposable mDisposable;
     private int id;
 
-    @BindView(R.id.iv_photo_news) ImageView mImageViewNews;
-    @BindView(R.id.head_of_news) TextView mHeadTextView;
-    @BindView(R.id.text_news) TextView mTextNews;
+    @BindView(R.id.iv_photo_news)
+    ImageView mImageViewNews;
+    @BindView(R.id.head_of_news)
+    TextView mHeadTextView;
+    @BindView(R.id.text_news)
+    TextView mTextNews;
 
     @NonNull
     public static Intent getStartIntent(Context context, int newId) {
@@ -65,10 +69,28 @@ public class NewsDetailActivity extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(this::finish, Throwable::printStackTrace);
                 return true;
+            case R.id.action_editor:
+                Intent intent = new Intent(this, EditorActivity.class);
+                intent.putExtra(ID_NEWS, id);
+                startActivityForResult(intent, REQUEST_CODE);
+                return true;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE:
+                    loadNews(id);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override

@@ -26,9 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,7 +46,8 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     private Spinner mSpinner;
     private String nowCategory = "";
     private Disposable mDisposable;
-    private List<NewsEntity> news = new ArrayList<>();
+    private List<NewsEntity> news;
+    private NewsAdapter mAdapter = new NewsAdapter(NewsListActivity.this);
 
 
     @BindView(R.id.activity_news_recycler) RecyclerView mRecycler;
@@ -73,7 +72,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
         mFloatingActionButton.setOnClickListener(view -> loadData(nowCategory));
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
             mSwipeRefreshLayout.setRefreshing(false);
-            loadData(nowCategory);
+           loadData(nowCategory);
         });
 
     }
@@ -159,7 +158,10 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
                         news = getNewsDao().getNews();
                     })
                     .observeOn(AndroidSchedulers.mainThread())
-                    .onErrorReturn(throwable -> news = getNewsDao().getNews())
+                    .onErrorReturn(throwable -> {
+                        news= getNewsDao().getNews();
+                        return news;
+                    })
                     .subscribe(responseStory -> {
                         showProgressBar(false);
                         showNews();
@@ -176,9 +178,8 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
     }
 
     private void showNews() {
-        NewsAdapter mAdapter = new NewsAdapter(NewsListActivity.this);
         mRecycler.setAdapter(mAdapter);
-        mAdapter.setItems(news);
+        mAdapter.addData(news);
         mProgressBar.setVisibility(View.GONE);
         mRecycler.setVisibility(View.VISIBLE);
     }
