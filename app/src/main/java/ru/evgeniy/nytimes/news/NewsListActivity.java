@@ -96,6 +96,7 @@ public class NewsListActivity extends AppCompatActivity implements MyClickListen
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 String name = adapterView.getItemAtPosition(position).toString();
                 nowCategory = name.toLowerCase();
+                loadData(nowCategory);
                 Log.d(TAG, "onItemSelected: " + name);
             }
             @Override
