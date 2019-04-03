@@ -1,0 +1,190 @@
+package ru.evgeniy.nytimes.Fragments
+
+
+import android.content.Context
+import android.content.res.Configuration
+import android.net.ConnectivityManager
+import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import ru.evgeniy.nytimes.R
+import kotlinx.android.synthetic.main.fragment_news_list.*
+import ru.evgeniy.nytimes.App
+import ru.evgeniy.nytimes.data.Category
+import ru.evgeniy.nytimes.data.db.NewsDao
+import ru.evgeniy.nytimes.data.db.NewsEntity
+import ru.evgeniy.nytimes.news.*
+import java.util.ArrayList
+
+
+class NewsListFragment : Fragment(), MyClickListener {
+
+    val TAG = "MYTAG"
+    private val SPAN_COUNT = 2
+    private val SPACING = 16
+    private var mSpinner: Spinner? = null
+    private var nowCategory = ""
+    private var mDisposable: Disposable? = null
+    private var news: MutableList<NewsEntity>? = null
+   private val mAdapter = NewsAdapter(this)
+
+
+    fun newInstance(): Fragment{
+        return NewsListFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_news_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        mSpinner = view.findViewById(R.id.action_bar_spinner)
+        if (isVertical()) {
+            news_recycler.layoutManager = LinearLayoutManager(activity)
+        } else {
+            news_recycler.layoutManager = GridLayoutManager(activity, SPAN_COUNT)
+        }
+        news_recycler.addItemDecoration(ItemDecorator(SPACING))
+
+        fab.setOnClickListener { view -> loadData(nowCategory) }
+        swipe_refresh.setOnRefreshListener {
+            swipe_refresh.isRefreshing = false
+            reloadNews()
+        }
+
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_category_news, menu)
+
+        val item = menu?.findItem(R.id.spinner_menu)
+        mSpinner = item?.actionView as Spinner
+
+        val categoryList = ArrayList<String>()
+        categoryList.add("")
+        for (category in Category.values()) {
+            categoryList.add(category.serverValue())
+        }
+        val adapter = ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, categoryList)
+        mSpinner?.adapter = adapter
+
+        mSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
+                val name = adapterView.getItemAtPosition(position).toString()
+                nowCategory = name.toLowerCase()
+                if (!nowCategory.isEmpty()) loadData(nowCategory)
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+    }
+
+    override fun onResume() {
+        reloadNews()
+        super.onResume()
+    }
+
+    override fun onStop() {
+        mDisposable?.dispose()
+        super.onStop()
+    }
+
+
+    override fun onItemClick(item: NewsEntity) {
+        activity?.supportFragmentManager?.beginTransaction()
+                ?.replace(R.id.news_container,NewsDetailFragment().newInstance(item.id))
+                ?.addToBackStack(null)
+                ?.commit()
+    }
+
+
+    fun isOnline(): Boolean {
+        val connectivityManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val networkInfo = connectivityManager!!.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnectedOrConnecting
+    }
+
+    fun isVertical(): Boolean {
+        val orientation = resources.configuration.orientation
+        return orientation != Configuration.ORIENTATION_LANDSCAPE
+    }
+
+    fun getNewsDao(): NewsDao {
+        return App.getDatabase().newsDao
+    }
+
+    fun reloadNews() {
+        mDisposable = Single.fromCallable { getNewsDao().news }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { newsEntities ->
+                    if (news!=null  && news!!.isEmpty()) {news?.clear()
+                    news?.size
+                    }
+                    else {
+                        news = newsEntities
+                    }
+                    showNews()
+                }
+    }
+
+
+    fun loadData(category: String) {
+        if (isOnline()) {
+            showProgressBar(true)
+            mDisposable = App.getRestApi()
+                    .getNews(category.replace(" ", ""))
+                    .map { responseStory -> StoryMappers.map(responseStory.results) }
+                    .subscribeOn(Schedulers.io())
+                    .doOnSuccess { newsItems ->
+                        getNewsDao().deleteAllNews()
+                        getNewsDao().insertAllNews(newsItems)
+                        news = getNewsDao().news
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorReturn { throwable ->
+                        news = getNewsDao().news
+                        news
+                    }
+                    .subscribe({ responseStory ->
+                        showProgressBar(false)
+                        showNews()
+                    }, { throwable -> showProgressBar(false) })
+        } else {
+            Snackbar.make(coordinator_layout_news, R.string.internet_connection, Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showProgressBar(isTrue: Boolean) {
+        if (isTrue)
+            progress_bar.visibility = View.VISIBLE
+        else
+            progress_bar.visibility = View.INVISIBLE
+    }
+
+    private fun showNews() {
+        news_recycler.setAdapter(mAdapter)
+        mAdapter.addData(news!!)
+        progress_bar.setVisibility(View.GONE)
+        news_recycler.setVisibility(View.VISIBLE)
+    }
+}

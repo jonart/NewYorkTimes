@@ -17,7 +17,7 @@ public class StoryMappers {
         throw new AssertionError("Must be no instance");
     }
 
-    static List<NewsEntity> map(@NonNull List<NewsDTO> dtos) {
+    public static List<NewsEntity> map(@NonNull List<NewsDTO> dtos) {
 
         List<NewsEntity> items = new ArrayList<>();
 

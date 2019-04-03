@@ -1,5 +1,6 @@
 package ru.evgeniy.nytimes.news
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
@@ -12,12 +13,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import ru.evgeniy.nytimes.App
+import ru.evgeniy.nytimes.Fragments.NewsDetailFragment
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.db.NewsDao
 import ru.evgeniy.nytimes.data.db.NewsEntity
 
 class EditorActivity : AppCompatActivity() {
 
+    val ID_NEWS = "ID_NEWS"
     private var mDisposable : Disposable? = null
 
     private lateinit var mImageViewNews: ImageView
@@ -32,7 +35,7 @@ class EditorActivity : AppCompatActivity() {
         mHeadTextView = findViewById(R.id.head_editor_of_news)
         mTextNews = findViewById(R.id.text_editor_news)
         mButtonSave = findViewById(R.id.btn_editor_save)
-        val id = intent.getIntExtra(NewsDetailActivity.ID_NEWS,0)
+        val id = intent.getIntExtra(ID_NEWS,0)
         loadNews(id)
     }
 
@@ -57,7 +60,7 @@ class EditorActivity : AppCompatActivity() {
         mDisposable = Completable.fromAction { getNewsDao().updateNewsById(id, title, fullText) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { setResult(NewsDetailActivity.RESULT_OK)
+                .subscribe { setResult(Activity.RESULT_OK)
                     finish() }
     }
 
