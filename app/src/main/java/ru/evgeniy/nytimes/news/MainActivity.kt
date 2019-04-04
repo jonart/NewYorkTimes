@@ -1,19 +1,16 @@
 package ru.evgeniy.nytimes.news
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import ru.evgeniy.nytimes.Fragments.IntroFragment
 import ru.evgeniy.nytimes.Fragments.NewsListFragment
 import ru.evgeniy.nytimes.R
-import ru.evgeniy.nytimes.data.db.NewsEntity
 
-class NewsActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_news)
+        setContentView(R.layout.activity_main)
 
 
 

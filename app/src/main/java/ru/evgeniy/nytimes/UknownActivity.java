@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import ru.evgeniy.nytimes.Activity.PreviewActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class UknownActivity extends AppCompatActivity {
 
     public String EMAIL_KEY = "EMAIL_KEY";
     private EditText mEditText;
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_uknown);
         mEditText = findViewById(R.id.et_email);
         mButton = findViewById(R.id.btn);
         final Intent intent = new Intent(this, PreviewActivity.class);
