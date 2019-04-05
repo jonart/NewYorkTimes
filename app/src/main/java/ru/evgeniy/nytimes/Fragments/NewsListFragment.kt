@@ -17,7 +17,6 @@ import android.widget.Spinner
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import ru.evgeniy.nytimes.App
@@ -68,10 +67,10 @@ class NewsListFragment : Fragment(), MyClickListener {
         }
         news_recycler.addItemDecoration(ItemDecorator(SPACING))
 
-        fab.setOnClickListener { loadData(nowCategory) }
+        fab.setOnClickListener { getNewsFromInternet(nowCategory) }
         swipe_refresh.setOnRefreshListener {
             swipe_refresh.isRefreshing = false
-            reloadNews()
+            getNewsFromDb()
         }
     }
 
@@ -93,7 +92,7 @@ class NewsListFragment : Fragment(), MyClickListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
                 val name = adapterView.getItemAtPosition(position).toString()
                 nowCategory = name.toLowerCase()
-                if (!nowCategory.isEmpty()) loadData(nowCategory)
+                if (!nowCategory.isEmpty()) getNewsFromInternet(nowCategory)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
@@ -101,13 +100,13 @@ class NewsListFragment : Fragment(), MyClickListener {
     }
 
     override fun onResume() {
-        reloadNews()
+        getNewsFromDb()
         super.onResume()
     }
 
     override fun onStop() {
         super.onStop()
-        disposable.dispose()
+        disposable.clear()
     }
 
 
@@ -119,7 +118,7 @@ class NewsListFragment : Fragment(), MyClickListener {
     }
 
 
-    fun loadData(category: String) {
+    fun getNewsFromInternet(category: String) {
         if (isOnline()) {
             showProgressBar(true)
             disposable.add(App.getRestApi()
@@ -140,11 +139,12 @@ class NewsListFragment : Fragment(), MyClickListener {
                         showProgressBar(false)
                         showNews()
                     }, { showProgressBar(false) }))
+
         } else {
             Snackbar.make(coordinator_layout_news, R.string.internet_connection, Snackbar.LENGTH_LONG)
                     .setActionTextColor(Color.GRAY)
                     .setAction(R.string.retry) {
-                        loadData(category)
+                        getNewsFromInternet(category)
                     }
                     .show()
         }
@@ -179,16 +179,16 @@ class NewsListFragment : Fragment(), MyClickListener {
         return App.getDatabase().newsDao
     }
 
-    private fun reloadNews() {
+    private fun getNewsFromDb() {
         disposable.add(Single.fromCallable { getNewsDao().news }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { newsEntities ->
-                    if (news != null && news!!.isEmpty()) {
-                        news?.clear()
-                        news?.size
-                    } else {
-                        news = newsEntities
+                    news?.let { niceNews ->
+                        when(niceNews.isEmpty()){
+                        true -> {news?.clear()}
+                        false -> news = newsEntities
+                    }
                     }
                     showNews()
                 })

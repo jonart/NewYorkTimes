@@ -3,6 +3,8 @@ package ru.evgeniy.nytimes.news
 import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -13,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import ru.evgeniy.nytimes.App
-import ru.evgeniy.nytimes.Fragments.NewsDetailFragment
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.db.NewsDao
 import ru.evgeniy.nytimes.data.db.NewsEntity
@@ -26,7 +27,7 @@ class EditorActivity : AppCompatActivity() {
     private lateinit var mImageViewNews: ImageView
     private lateinit var mHeadTextView: EditText
     private lateinit var mTextNews: EditText
-    private lateinit var mButtonSave: Button
+    var id_news: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +35,29 @@ class EditorActivity : AppCompatActivity() {
         mImageViewNews = findViewById(R.id.iv_editor_photo_news)
         mHeadTextView = findViewById(R.id.head_editor_of_news)
         mTextNews = findViewById(R.id.text_editor_news)
-        mButtonSave = findViewById(R.id.btn_editor_save)
-        val id = intent.getIntExtra(ID_NEWS,0)
-        loadNews(id)
+        id_news = intent.getIntExtra(ID_NEWS,0)
+        loadNews(id_news)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_editor, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_save -> {
+                saveNews(id_news,mHeadTextView.text.toString(), mTextNews.text.toString())
+                true
+            }
+            R.id.action_cancel -> {
+                finish()
+                true
+            }
+            else -> {
+                true
+            }
+        }
     }
 
     private fun loadNews(id:Int){
@@ -51,9 +72,6 @@ class EditorActivity : AppCompatActivity() {
                     mHeadTextView.setText(newsEntity.title)
                     mTextNews.setText(newsEntity.fullText)
                 }
-        mButtonSave.setOnClickListener {
-            saveNews(id,mHeadTextView.text.toString(), mTextNews.text.toString())
-        }
     }
 
     private fun saveNews(id:Int, title:String, fullText:String){
