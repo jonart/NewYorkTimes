@@ -23,6 +23,7 @@
     <string name="github">https://github.com/jonart</string>
     <string name="internet_connection">Internet is not available</string>
     <string name="welcome">Welcome!</string>
+    <string name="retry">retry</string>
 
 
     <string name="category_home">Home</string>

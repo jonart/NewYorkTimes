@@ -6,23 +6,23 @@ import ru.evgeniy.nytimes.Fragments.NewsListFragment
 import ru.evgeniy.nytimes.R
 
 class MainActivity : AppCompatActivity() {
-    val fragmentManager = supportFragmentManager
+    val mFragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.news_container, NewsListFragment().newInstance())
-                .addToBackStack(null)
+        val mFragment = NewsListFragment().newInstance()
+        mFragmentManager.beginTransaction()
+                .replace(R.id.news_container, mFragment)
+                .addToBackStack(mFragment.tag)
                 .commit()
     }
 
     override fun onBackPressed() {
         val fragmentManager = supportFragmentManager
-        if (fragmentManager.backStackEntryCount == 0) {
+        if (fragmentManager.backStackEntryCount == 1) {
             finish()
         } else {
             fragmentManager.popBackStack()
