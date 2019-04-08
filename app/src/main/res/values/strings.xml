@@ -53,6 +53,8 @@
     <string name="category_insider">Insider</string>
     <string name="delete">Удалить</string>
     <string name="email_send">jonart2008@gmail.com</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Save</string>
 
     <array name="category_array">
         <item name="category_home">Home</item>
