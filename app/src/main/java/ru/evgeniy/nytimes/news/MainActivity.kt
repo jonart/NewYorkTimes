@@ -6,7 +6,7 @@ import ru.evgeniy.nytimes.Fragments.NewsListFragment
 import ru.evgeniy.nytimes.R
 
 class MainActivity : AppCompatActivity() {
-    val mFragmentManager = supportFragmentManager
+    private val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
 
         val mFragment = NewsListFragment().newInstance()
-        mFragmentManager.beginTransaction()
+        fragmentManager.beginTransaction()
                 .replace(R.id.news_container, mFragment)
                 .addToBackStack(mFragment.tag)
                 .commit()
@@ -22,8 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val fragmentManager = supportFragmentManager
-        if (fragmentManager.backStackEntryCount == 1) {
+        if (fragmentManager.backStackEntryCount <= 1) {
             finish()
+            return
         } else {
             fragmentManager.popBackStack()
         }

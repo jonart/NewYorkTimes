@@ -25,12 +25,12 @@ import ru.evgeniy.nytimes.data.Category
 import ru.evgeniy.nytimes.data.db.NewsDao
 import ru.evgeniy.nytimes.data.db.NewsEntity
 import ru.evgeniy.nytimes.news.ItemDecorator
-import ru.evgeniy.nytimes.news.MyClickListener
+import ru.evgeniy.nytimes.news.NewsClickListener
 import ru.evgeniy.nytimes.news.NewsAdapter
 import ru.evgeniy.nytimes.news.StoryMappers
 import java.util.*
 
-class NewsListFragment : Fragment(), MyClickListener {
+class NewsListFragment : Fragment(), NewsClickListener {
 
     private val SPAN_COUNT = 2
     private val SPACING = 16
@@ -158,7 +158,7 @@ class NewsListFragment : Fragment(), MyClickListener {
     }
 
     private fun showNews() {
-        news_recycler.setAdapter(mAdapter)
+        news_recycler.adapter = mAdapter
         mAdapter.addData(news!!)
         progress_bar.visibility = View.GONE
         news_recycler.visibility = View.VISIBLE
@@ -167,7 +167,7 @@ class NewsListFragment : Fragment(), MyClickListener {
     private fun isOnline(): Boolean {
         val connectivityManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val networkInfo = connectivityManager!!.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnectedOrConnecting
+        return networkInfo != null && networkInfo.isConnected
     }
 
     private fun isVertical(): Boolean {
@@ -189,8 +189,8 @@ class NewsListFragment : Fragment(), MyClickListener {
                         true -> {news?.clear()}
                         false -> news = newsEntities
                     }
+                        showNews()
                     }
-                    showNews()
                 })
     }
 }

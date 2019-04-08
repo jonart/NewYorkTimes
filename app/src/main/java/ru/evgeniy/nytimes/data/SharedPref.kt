@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SharedPref(context: Context) {
-    private val SHARED_PREF_NAME = "MY_SHARED_PREF"
-    private val FIRST_LAUNCH = "FIRST_LAUNCH"
     private val mSharedPreferences: SharedPreferences
 
     init {
@@ -22,5 +20,11 @@ class SharedPref(context: Context) {
             mSharedPreferences.edit().putBoolean(FIRST_LAUNCH, true).apply()
             false
         }
+    }
+
+    companion object {
+        const val SHARED_PREF_NAME = "MY_SHARED_PREF"
+        private const val FIRST_LAUNCH = "FIRST_LAUNCH"
+
     }
 }

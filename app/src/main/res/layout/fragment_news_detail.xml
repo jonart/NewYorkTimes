@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="8dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/descript_photo" />
 
         <TextView
             android:id="@+id/head_of_news"
@@ -27,7 +28,6 @@
             android:id="@+id/text_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:layout_margin="8dp" />
 
     </LinearLayout>

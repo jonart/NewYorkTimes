@@ -18,6 +18,8 @@ import io.reactivex.disposables.Disposable;
 import me.relex.circleindicator.CircleIndicator;
 import ru.evgeniy.nytimes.App;
 import ru.evgeniy.nytimes.Fragments.IntroFragment1;
+import ru.evgeniy.nytimes.Fragments.IntroFragment2;
+import ru.evgeniy.nytimes.Fragments.IntroFragment3;
 import ru.evgeniy.nytimes.R;
 import ru.evgeniy.nytimes.data.SharedPref;
 import ru.evgeniy.nytimes.news.MainActivity;
@@ -26,7 +28,6 @@ public class IntroActivity extends AppCompatActivity {
     public static final int DELAY_TIME = 3;
     final int PAGE_COUNT = 3;
     private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    FragmentPagerAdapter mFragmentPagerAdapter;
     CircleIndicator mCircleIndicator;
 
     SharedPref Storage = App.getSharedPref();
@@ -36,32 +37,28 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_intro);
-//        mCircleIndicator = findViewById(R.id.indicator);
-//
-//        ViewPager viewpager = findViewById(R.id.viewPager);
-//        viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-//            @Override
-//            public Fragment getItem(int i) {
-//
-//                Fragment fragment;
-//                switch (i){
-//                    case 0: fragment = new IntroFragment1().newInstance();break;
-//                    case 1: fragment = new IntroFragment1().newInstance();break;
-//                    default:  fragment = new IntroFragment1().newInstance();break;
-//                }
-//                return fragment;
-//            }
-//
-//            @Override
-//            public int getCount() {
-//                return PAGE_COUNT;
-//            }
-//        });
-//        mCircleIndicator.setViewPager(viewpager);
-//
+        mCircleIndicator = findViewById(R.id.indicator);
 
+        ViewPager viewpager = findViewById(R.id.viewPager);
+        viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int i) {
 
+                Fragment fragment;
+                switch (i){
+                    case 0: fragment = new IntroFragment1().newInstance();break;
+                    case 1: fragment = new IntroFragment2().newInstance();break;
+                    default:  fragment = new IntroFragment3().newInstance();break;
+                }
+                return fragment;
+            }
 
+            @Override
+            public int getCount() {
+                return PAGE_COUNT;
+            }
+        });
+        mCircleIndicator.setViewPager(viewpager);
 
         if (Storage.needToShowIntro()) {
             Disposable disposable = Completable.complete()

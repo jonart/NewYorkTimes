@@ -13,9 +13,9 @@ import ru.evgeniy.nytimes.data.db.NewsEntity;
 public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> {
 
     private List<NewsEntity> items;
-    private final MyClickListener onClick;
+    private final NewsClickListener onClick;
 
-    public NewsAdapter(@NonNull MyClickListener onClick) {
+    public NewsAdapter(@NonNull NewsClickListener onClick) {
         this.onClick = onClick;
     }
 

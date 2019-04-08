@@ -4,6 +4,6 @@ import android.support.annotation.NonNull;
 
 import ru.evgeniy.nytimes.data.db.NewsEntity;
 
-public interface MyClickListener {
+public interface NewsClickListener {
     void onItemClick(@NonNull NewsEntity item);
 }
