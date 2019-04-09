@@ -37,7 +37,7 @@ class NewsListFragment : Fragment(), NewsClickListener {
         private const val SPACING = 16
     }
 
-    private lateinit var spinner: Spinner
+    private var spinner: Spinner? = null
     private var nowCategory = ""
     private var disposable = CompositeDisposable()
     private var news: MutableList<NewsEntity>? = null

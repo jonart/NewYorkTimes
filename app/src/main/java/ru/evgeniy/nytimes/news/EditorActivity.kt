@@ -55,11 +55,11 @@ class EditorActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        compositeDisposable?.clear()
+        compositeDisposable.clear()
     }
 
     private fun loadNews(id:Int){
-        compositeDisposable?.add(getNewsDao().getNewsById(id)
+        compositeDisposable.add(getNewsDao().getNewsById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { newsEntity ->
@@ -73,7 +73,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun saveNews(id:Int, title:String, fullText:String){
-        compositeDisposable?.add(Completable.fromAction { getNewsDao().updateNewsById(id, title, fullText) }
+        compositeDisposable.add(Completable.fromAction { getNewsDao().updateNewsById(id, title, fullText) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { setResult(Activity.RESULT_OK)
