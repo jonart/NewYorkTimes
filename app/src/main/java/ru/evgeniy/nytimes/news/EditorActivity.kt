@@ -18,10 +18,12 @@ import ru.evgeniy.nytimes.data.db.NewsDao
 
 class EditorActivity : AppCompatActivity() {
 
-    val ID_NEWS = "ID_NEWS"
-    private var disposable : CompositeDisposable? = CompositeDisposable()
+    companion object {
+        private val ID_NEWS = "ID_NEWS"
+    }
 
-    var id_news: Int = 0
+    private var id_news: Int = 0
+    private var compositeDisposable : CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +55,11 @@ class EditorActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        disposable?.clear()
+        compositeDisposable?.clear()
     }
 
     private fun loadNews(id:Int){
-        disposable?.add(getNewsDao().getNewsById(id)
+        compositeDisposable?.add(getNewsDao().getNewsById(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { newsEntity ->
@@ -71,7 +73,7 @@ class EditorActivity : AppCompatActivity() {
     }
 
     private fun saveNews(id:Int, title:String, fullText:String){
-        disposable?.add(Completable.fromAction { getNewsDao().updateNewsById(id, title, fullText) }
+        compositeDisposable?.add(Completable.fromAction { getNewsDao().updateNewsById(id, title, fullText) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { setResult(Activity.RESULT_OK)

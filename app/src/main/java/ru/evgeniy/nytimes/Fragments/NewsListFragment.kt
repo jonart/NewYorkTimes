@@ -111,10 +111,12 @@ class NewsListFragment : Fragment(), NewsClickListener {
 
 
     override fun onItemClick(item: NewsEntity) {
-        activity?.supportFragmentManager?.beginTransaction()
-                ?.replace(R.id.news_container, NewsDetailFragment().newInstance(item.id))
-                ?.addToBackStack(null)
-                ?.commit()
+        activity?.supportFragmentManager?.apply {
+            beginTransaction()
+                    .replace(R.id.news_container, NewsDetailFragment().newInstance(item.id))
+                    .addToBackStack(null)
+                    .commit()
+        }
     }
 
 
@@ -165,7 +167,7 @@ class NewsListFragment : Fragment(), NewsClickListener {
     }
 
     private fun isOnline(): Boolean {
-        val connectivityManager = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val connectivityManager = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val networkInfo = connectivityManager!!.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }

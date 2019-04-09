@@ -1,11 +1,17 @@
 package ru.evgeniy.nytimes.news
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import ru.evgeniy.nytimes.Fragments.NewsListFragment
 import ru.evgeniy.nytimes.R
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        fun create(context:Context):Intent = Intent(context, MainActivity::class.java)
+    }
+
     private val fragmentManager = supportFragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {

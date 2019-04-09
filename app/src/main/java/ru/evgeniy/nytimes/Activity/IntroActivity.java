@@ -3,12 +3,10 @@ package ru.evgeniy.nytimes.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,10 +23,9 @@ import ru.evgeniy.nytimes.data.SharedPref;
 import ru.evgeniy.nytimes.news.MainActivity;
 
 public class IntroActivity extends AppCompatActivity {
-    public static final int DELAY_TIME = 3;
-    final int PAGE_COUNT = 3;
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-    CircleIndicator mCircleIndicator;
+    private static final int DELAY_TIME = 3;
+    private static final int PAGE_COUNT = 3;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     SharedPref Storage = App.getSharedPref();
 
@@ -37,7 +34,7 @@ public class IntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_intro);
-        mCircleIndicator = findViewById(R.id.indicator);
+        CircleIndicator circleIndicator = findViewById(R.id.indicator);
 
         ViewPager viewpager = findViewById(R.id.viewPager);
         viewpager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -58,26 +55,26 @@ public class IntroActivity extends AppCompatActivity {
                 return PAGE_COUNT;
             }
         });
-        mCircleIndicator.setViewPager(viewpager);
+        circleIndicator.setViewPager(viewpager);
 
         if (Storage.needToShowIntro()) {
             Disposable disposable = Completable.complete()
                     .delay(DELAY_TIME, TimeUnit.SECONDS)
-                    .subscribe(this::startSecondActivity);
-            mCompositeDisposable.add(disposable);
+                    .subscribe(this::startMainActivity);
+            compositeDisposable.add(disposable);
         } else {
-            startSecondActivity();
+            startMainActivity();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mCompositeDisposable.dispose();
+        compositeDisposable.dispose();
     }
 
-    private void startSecondActivity() {
-        startActivity(new Intent(this, MainActivity.class));
+    private void startMainActivity() {
+        startActivity(MainActivity.Companion.create(this));
         finish();
     }
 }
