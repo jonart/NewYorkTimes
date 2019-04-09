@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.Fragments
+package ru.evgeniy.nytimes.fragments
 
 
 import android.app.Activity
@@ -11,8 +11,6 @@ import com.bumptech.glide.request.RequestOptions
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_news_detail.*
 import ru.evgeniy.nytimes.App
@@ -22,10 +20,13 @@ import ru.evgeniy.nytimes.news.EditorActivity
 
 class NewsDetailFragment : Fragment() {
 
-    private val REQUEST_CODE = 1
-    private val ID_NEWS = "ID_NEWS"
-    private var disposable: CompositeDisposable? = CompositeDisposable()
-    private var id_news:Int = 0
+    companion object {
+        private const val  REQUEST_CODE = 1
+        private const val ID_NEWS = "ID_NEWS"
+        private var newsId:Int = 0
+    }
+
+    private var disposable = CompositeDisposable()
 
     fun newInstance(id: Int): Fragment {
         val fragment = NewsDetailFragment()
@@ -48,9 +49,9 @@ class NewsDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments != null){
-            id_news = arguments!!.getInt(ID_NEWS)
-            loadNews(id_news)
+        arguments?.apply {
+            newsId = getInt(ID_NEWS)
+            loadNews()
         }
     }
 
@@ -61,7 +62,7 @@ class NewsDetailFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_delete -> {
-                disposable?.add(Completable.fromAction { getNewsDao().deleteById(id_news) }
+                disposable.add(Completable.fromAction { getNewsDao().deleteById(newsId) }
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({ fragmentManager?.popBackStack()}, { it.printStackTrace() }))
@@ -69,11 +70,9 @@ class NewsDetailFragment : Fragment() {
             }
             R.id.action_editor -> {
                 val intent = Intent(context, EditorActivity::class.java)
-                intent.putExtra(ID_NEWS, id_news)
+                intent.putExtra(ID_NEWS, newsId)
                 startActivityForResult(intent, REQUEST_CODE)
                 return true
-            }
-            else -> {
             }
         }
         return super.onOptionsItemSelected(item)
@@ -82,24 +81,22 @@ class NewsDetailFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE -> loadNews(id_news)
-                else -> {
-                }
+                REQUEST_CODE -> loadNews()
             }
         }
     }
 
     override fun onStop() {
         super.onStop()
-        disposable?.clear()
+        disposable.clear()
     }
 
     private fun getNewsDao(): NewsDao {
         return App.getDatabase().newsDao
     }
 
-    private fun loadNews(id: Int) {
-        disposable?.add(getNewsDao().getNewsById(id)
+    private fun loadNews() {
+        disposable.add(getNewsDao().getNewsById(newsId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSuccess { newsEntity ->

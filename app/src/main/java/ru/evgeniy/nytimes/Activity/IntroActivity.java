@@ -1,6 +1,5 @@
 package ru.evgeniy.nytimes.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,15 +14,13 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import me.relex.circleindicator.CircleIndicator;
 import ru.evgeniy.nytimes.App;
-import ru.evgeniy.nytimes.Fragments.IntroFragment1;
-import ru.evgeniy.nytimes.Fragments.IntroFragment2;
-import ru.evgeniy.nytimes.Fragments.IntroFragment3;
+import ru.evgeniy.nytimes.fragments.IntroFragment;
 import ru.evgeniy.nytimes.R;
 import ru.evgeniy.nytimes.data.SharedPref;
 import ru.evgeniy.nytimes.news.MainActivity;
 
 public class IntroActivity extends AppCompatActivity {
-    private static final int DELAY_TIME = 3;
+    private static final int DELAY_TIME = 60;
     private static final int PAGE_COUNT = 3;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -43,9 +40,9 @@ public class IntroActivity extends AppCompatActivity {
 
                 Fragment fragment;
                 switch (i){
-                    case 0: fragment = new IntroFragment1().newInstance();break;
-                    case 1: fragment = new IntroFragment2().newInstance();break;
-                    default:  fragment = new IntroFragment3().newInstance();break;
+                    case 0: fragment = new IntroFragment().newInstance(1);break;
+                    case 1: fragment = new IntroFragment().newInstance(3);break;
+                    default:  fragment = new IntroFragment().newInstance(2);break;
                 }
                 return fragment;
             }

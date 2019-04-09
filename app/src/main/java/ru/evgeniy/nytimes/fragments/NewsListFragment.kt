@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.Fragments
+package ru.evgeniy.nytimes.fragments
 
 
 import android.content.Context
@@ -32,19 +32,19 @@ import java.util.*
 
 class NewsListFragment : Fragment(), NewsClickListener {
 
-    private val SPAN_COUNT = 2
-    private val SPACING = 16
-    private var spinner: Spinner? = null
-    private var nowCategory = ""
-    private var disposable: CompositeDisposable = CompositeDisposable()
+    companion object {
+        private const val SPAN_COUNT = 2
+        private const val SPACING = 16
+    }
 
+    private lateinit var spinner: Spinner
+    private var nowCategory = ""
+    private var disposable = CompositeDisposable()
     private var news: MutableList<NewsEntity>? = null
     private val mAdapter = NewsAdapter(this)
 
 
-    fun newInstance(): Fragment {
-        return NewsListFragment()
-    }
+    fun newInstance() = NewsListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,7 +92,7 @@ class NewsListFragment : Fragment(), NewsClickListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
                 val name = adapterView.getItemAtPosition(position).toString()
                 nowCategory = name.toLowerCase()
-                if (!nowCategory.isEmpty()) getNewsFromInternet(nowCategory)
+                if (nowCategory.isNotEmpty()) getNewsFromInternet(nowCategory)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}

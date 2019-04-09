@@ -19,17 +19,17 @@ import ru.evgeniy.nytimes.data.db.NewsDao
 class EditorActivity : AppCompatActivity() {
 
     companion object {
-        private val ID_NEWS = "ID_NEWS"
+        private const val ID_NEWS = "ID_NEWS"
     }
 
-    private var id_news: Int = 0
+    private var newsId: Int = 0
     private var compositeDisposable : CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editor)
-        id_news = intent.getIntExtra(ID_NEWS,0)
-        loadNews(id_news)
+        newsId = intent.getIntExtra(ID_NEWS,0)
+        loadNews(newsId)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -40,7 +40,7 @@ class EditorActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.action_save -> {
-                saveNews(id_news,head_editor_of_news.text.toString(), text_editor_news.text.toString())
+                saveNews(newsId,head_editor_of_news.text.toString(), text_editor_news.text.toString())
                 true
             }
             R.id.action_cancel -> {
