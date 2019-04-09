@@ -20,7 +20,7 @@ import ru.evgeniy.nytimes.data.SharedPref;
 import ru.evgeniy.nytimes.news.MainActivity;
 
 public class IntroActivity extends AppCompatActivity {
-    private static final int DELAY_TIME = 60;
+    private static final int DELAY_TIME = 3;
     private static final int PAGE_COUNT = 3;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
