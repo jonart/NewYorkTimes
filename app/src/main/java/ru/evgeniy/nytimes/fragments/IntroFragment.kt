@@ -11,8 +11,7 @@ import kotlinx.android.synthetic.main.fragment_intro.*
 
 class IntroFragment : Fragment() {
 companion object {
-    private val SCREEN_NUMBER = "SCREEN_NUMBER"
-    var screenId = 0
+    private const val SCREEN_NUMBER = "SCREEN_NUMBER"
 }
 
     fun newInstance(screenNumber:Int): Fragment{
@@ -31,19 +30,10 @@ companion object {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (arguments != null){
-            screenId = arguments!!.getInt(SCREEN_NUMBER)
-            setImage()
-        }
-    }
-
-    private fun setImage(){
-        when(screenId){
-            1 -> image.setImageResource(R.drawable.device)
-            2 -> image.setImageResource(R.drawable.device_edit)
-            3 -> image.setImageResource(R.drawable.device_read)
-            else -> image.setImageResource(R.drawable.notavailable)
-        }
+            arguments?.apply {
+                val screenId = getInt(SCREEN_NUMBER)
+                image.setImageResource(screenId)
+            }
     }
 
 }

@@ -20,6 +20,7 @@ import ru.evgeniy.nytimes.data.SharedPref;
 import ru.evgeniy.nytimes.news.MainActivity;
 
 public class IntroActivity extends AppCompatActivity {
+
     private static final int DELAY_TIME = 3;
     private static final int PAGE_COUNT = 3;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -40,9 +41,9 @@ public class IntroActivity extends AppCompatActivity {
 
                 Fragment fragment;
                 switch (i){
-                    case 0: fragment = new IntroFragment().newInstance(1);break;
-                    case 1: fragment = new IntroFragment().newInstance(3);break;
-                    default:  fragment = new IntroFragment().newInstance(2);break;
+                    case 0: fragment = new IntroFragment().newInstance(R.drawable.device);break;
+                    case 1: fragment = new IntroFragment().newInstance(R.drawable.device_read);break;
+                    default:  fragment = new IntroFragment().newInstance(R.drawable.device_edit);break;
                 }
                 return fragment;
             }
@@ -67,7 +68,7 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        compositeDisposable.dispose();
+        compositeDisposable.clear();
     }
 
     private void startMainActivity() {
