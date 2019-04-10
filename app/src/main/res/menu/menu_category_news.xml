@@ -4,6 +4,7 @@
     <item
         android:id="@+id/spinner_menu"
         android:title="@string/menu_action_switch"
+        android:spinnerMode="dialog"
         app:actionViewClass="android.widget.Spinner"
         app:showAsAction="ifRoom" />
 </menu>

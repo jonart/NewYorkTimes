@@ -36,7 +36,7 @@ class NewsHolder extends RecyclerView.ViewHolder {
 
     }
 
-    void bind(NewsEntity item, MyClickListener onClick) {
+    void bind(NewsEntity item, NewsClickListener onClick) {
         mCategory.setText(item.getCategory());
         mTitle.setText(item.getTitle());
         mText.setText(item.getFullText());

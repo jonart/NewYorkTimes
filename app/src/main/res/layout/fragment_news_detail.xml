@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,25 +9,25 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/iv_editor_photo_news"
+            android:id="@+id/iv_photo_news"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_margin="8dp"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/descript_photo" />
 
-        <EditText
-            android:id="@+id/head_editor_of_news"
+        <TextView
+            android:id="@+id/head_of_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
             tools:text="HEADER" />
 
-        <EditText
-            android:id="@+id/text_editor_news"
+        <TextView
+            android:id="@+id/text_news"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
             android:layout_margin="8dp" />
 
     </LinearLayout>

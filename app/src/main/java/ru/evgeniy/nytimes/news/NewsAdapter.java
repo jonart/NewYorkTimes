@@ -13,13 +13,13 @@ import ru.evgeniy.nytimes.data.db.NewsEntity;
 public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> {
 
     private List<NewsEntity> items;
-    private final MyClickListener onClick;
+    private final NewsClickListener onClick;
 
-    NewsAdapter(@NonNull MyClickListener onClick) {
+    public NewsAdapter(@NonNull NewsClickListener onClick) {
         this.onClick = onClick;
     }
 
-    void addData(@NonNull List<NewsEntity> items) {
+    public void addData(@NonNull List<NewsEntity> items) {
         if (this.items != null){this.items.clear();}
         this.items = items;
         notifyDataSetChanged();

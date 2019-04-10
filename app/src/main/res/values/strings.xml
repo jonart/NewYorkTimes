@@ -23,6 +23,7 @@
     <string name="github">https://github.com/jonart</string>
     <string name="internet_connection">Internet is not available</string>
     <string name="welcome">Welcome!</string>
+    <string name="retry">retry</string>
 
 
     <string name="category_home">Home</string>
@@ -54,7 +55,8 @@
     <string name="delete">Удалить</string>
     <string name="email_send">jonart2008@gmail.com</string>
     <string name="edit">Редактировать</string>
-    <string name="save">Save</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
 
     <array name="category_array">
         <item name="category_home">Home</item>
@@ -84,4 +86,7 @@
         <item name="category_obituaries">Obituaries</item>
         <item name="category_insider">Insider</item>
     </array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
