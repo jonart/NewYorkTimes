@@ -1,11 +1,11 @@
-package ru.evgeniy.nytimes.data;
+package ru.evgeniy.nytimes.data
 
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import android.support.annotation.StringRes
 
-import ru.evgeniy.nytimes.R;
+import ru.evgeniy.nytimes.R
 
-public enum Category {
+enum class Category private constructor(private val serverValue: String,
+                                        @param:StringRes internal val displayResId: Int) {
 
     HOME("home", R.string.category_home),
     OPINION("opinion", R.string.category_opinion),
@@ -32,27 +32,16 @@ public enum Category {
     OBITUARIES("obituaries", R.string.category_obituaries),
     INSIDER("insider", R.string.category_insider);
 
-    final String serverValue;
-    final int displayResId;
-
-    Category(@NonNull String serverValue,
-                 @StringRes int displayResId) {
-        this.displayResId = displayResId;
-        this.serverValue = serverValue;
-    }
-
     @StringRes
-    public int displayValue(){
-        return displayResId;
+    fun displayValue(): Int {
+        return displayResId
     }
 
-    @NonNull
-    public String serverValue(){
-        return serverValue;
+    fun serverValue(): String {
+        return serverValue
     }
 
-    @Override
-    public String toString() {
-        return serverValue;
+    override fun toString(): String {
+        return serverValue
     }
 }

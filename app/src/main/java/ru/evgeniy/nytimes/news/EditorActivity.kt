@@ -80,5 +80,5 @@ class EditorActivity : AppCompatActivity() {
                     finish() })
     }
 
-    private fun getNewsDao(): NewsDao = App.getDatabase().newsDao
+    private fun getNewsDao(): NewsDao = App.database.newsDao
 }

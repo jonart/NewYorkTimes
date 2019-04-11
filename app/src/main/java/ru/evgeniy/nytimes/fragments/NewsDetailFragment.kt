@@ -92,7 +92,7 @@ class NewsDetailFragment : Fragment() {
     }
 
     private fun getNewsDao(): NewsDao {
-        return App.getDatabase().newsDao
+        return App.database.newsDao
     }
 
     private fun loadNews() {

@@ -25,8 +25,8 @@ import ru.evgeniy.nytimes.data.Category
 import ru.evgeniy.nytimes.data.db.NewsDao
 import ru.evgeniy.nytimes.data.db.NewsEntity
 import ru.evgeniy.nytimes.news.ItemDecorator
-import ru.evgeniy.nytimes.news.NewsClickListener
 import ru.evgeniy.nytimes.news.NewsAdapter
+import ru.evgeniy.nytimes.news.NewsClickListener
 import ru.evgeniy.nytimes.news.StoryMappers
 import java.util.*
 
@@ -123,13 +123,13 @@ class NewsListFragment : Fragment(), NewsClickListener {
     fun getNewsFromInternet(category: String) {
         if (isOnline()) {
             showProgressBar(true)
-            disposable.add(App.getRestApi()
+            disposable.add(App.restApi
                     .getNews(category.replace(" ", ""))
-                    .map { responseStory -> StoryMappers.map(responseStory.results) }
+                    .map { responseStory -> responseStory.results?.let { StoryMappers.map(it) } }
                     .subscribeOn(Schedulers.io())
                     .doOnSuccess { newsItems ->
                         getNewsDao().deleteAllNews()
-                        getNewsDao().insertAllNews(newsItems)
+                        newsItems?.let { getNewsDao().insertAllNews(it) }
                         news = getNewsDao().news
                     }
                     .observeOn(AndroidSchedulers.mainThread())
@@ -178,7 +178,7 @@ class NewsListFragment : Fragment(), NewsClickListener {
     }
 
     private fun getNewsDao(): NewsDao {
-        return App.getDatabase().newsDao
+        return App.database.newsDao
     }
 
     private fun getNewsFromDb() {

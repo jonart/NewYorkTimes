@@ -1,12 +1,10 @@
-package ru.evgeniy.nytimes.data.network.dto;
+package ru.evgeniy.nytimes.data.network.dto
 
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
+import io.reactivex.annotations.NonNull
 
-import io.reactivex.annotations.NonNull;
-
-public class NewsDTO {
+class NewsDTO {
     /**
      * section : World
      * subsection : Middle East
@@ -29,70 +27,22 @@ public class NewsDTO {
      */
 
     @SerializedName("subsection")
-    private String subsection;
+    @get:NonNull
+    var subsection: String? = null
     @SerializedName("title")
-    private String title;
+    @get:NonNull
+    var title: String? = null
     @SerializedName("abstract")
-    private String abstractX;
+    @get:NonNull
+    var abstractX: String? = null
     @SerializedName("published_date")
-    private String published_date;
+    @get:NonNull
+    var published_date: String? = null
     @SerializedName("multimedia")
-    private List<MultimediaDTO> multimedia;
+    @get:NonNull
+    var multimedia: List<MultimediaDTO>? = null
 
     @SerializedName("url")
-    private String url;
-
-    @NonNull
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(@NonNull String url) {
-        this.url = url;
-    }
-
-    @NonNull
-    public String getSubsection() {
-        return subsection;
-    }
-
-    public void setSubsection(@NonNull String subsection) {
-        this.subsection = subsection;
-    }
-
-    @NonNull
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(@NonNull String title) {
-        this.title = title;
-    }
-
-    @NonNull
-    public String getAbstractX() {
-        return abstractX;
-    }
-
-    public void setAbstractX(@NonNull String abstractX) {
-        this.abstractX = abstractX;
-    }
-
-    @NonNull
-    public String getPublished_date() {
-        return published_date;
-    }
-
-    public void setPublished_date(@NonNull String published_date) {
-        this.published_date = published_date;
-    }
-
-    @NonNull
-    public List<MultimediaDTO> getMultimedia() {
-        return multimedia;
-    }
-
-    public void setMultimedia(@NonNull List<MultimediaDTO> multimedia) {
-        this.multimedia = multimedia;
-    }
+    @get:NonNull
+    var url: String? = null
 }
