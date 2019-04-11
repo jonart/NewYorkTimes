@@ -54,7 +54,7 @@ dependencies {
 
     //Butterknife
     implementation 'com.jakewharton:butterknife:9.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:9.0.0'
+    kapt 'com.jakewharton:butterknife-compiler:9.0.0'
 
     //Room
     implementation "android.arch.persistence.room:rxjava2:1.1.1"
@@ -69,4 +69,9 @@ dependencies {
 
     //CicrcleIndicator for IntroScreen
     implementation 'me.relex:circleindicator:1.2.2'
+
+    //Moxy
+    implementation "com.arello-mobile:moxy:1.5.5"
+    implementation "com.arello-mobile:moxy-app-compat:1.5.5"
+    kapt "com.arello-mobile:moxy-compiler:1.5.5"
 }
