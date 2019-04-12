@@ -2,6 +2,7 @@ package ru.evgeniy.nytimes
 
 import android.app.Application
 import android.arch.persistence.room.Room
+import android.content.Context
 
 import com.facebook.stetho.Stetho
 
@@ -16,6 +17,7 @@ class App : Application() {
         lateinit var sharedPref: SharedPref
         lateinit var restApi: Api
         lateinit var database: NewsDatabase
+        lateinit var context: Context
     }
 
     override fun onCreate() {
@@ -27,5 +29,6 @@ class App : Application() {
         database = Room.databaseBuilder(applicationContext, NewsDatabase::class.java, "news_database.db")
                 .fallbackToDestructiveMigration()
                 .build()
+        context = applicationContext
     }
 }

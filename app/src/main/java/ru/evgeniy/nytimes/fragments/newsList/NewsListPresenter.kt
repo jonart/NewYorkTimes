@@ -1,5 +1,7 @@
 package ru.evgeniy.nytimes.fragments.newsList
 
+import android.content.Context
+import android.net.ConnectivityManager
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Single
@@ -17,7 +19,7 @@ class NewsListPresenter: MvpPresenter<NewsListView>() {
     var disposable = CompositeDisposable()
 
     fun getNewsFromInternet(category: String) {
-        if (true) {
+        if (isOnline()) {
             viewState.showProgressBar(true)
             disposable.add(App.restApi
                     .getNews(category.replace(" ", ""))
@@ -49,20 +51,23 @@ class NewsListPresenter: MvpPresenter<NewsListView>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { newsEntities ->
                     news?.let { niceNews ->
-                        when(niceNews.isEmpty()){
-                            true -> {news?.clear()}
-                            false -> news = newsEntities
+                        news = when(niceNews.isEmpty()){
+                            true -> newsEntities
+                            false -> {
+                                news?.clear()
+                                newsEntities
+                            }
                         }
                         news?.let { viewState.showNews(it) }
                     }
                 })
     }
 
-//    private fun isOnline(): Boolean {
-//        val connectivityManager = requereContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-//        val networkInfo = connectivityManager!!.activeNetworkInfo
-//        return networkInfo != null && networkInfo.isConnected
-//    }
+    private fun isOnline(): Boolean {
+        val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val networkInfo = connectivityManager!!.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
 
     private fun getNewsDao(): NewsDao {
         return App.database.newsDao
