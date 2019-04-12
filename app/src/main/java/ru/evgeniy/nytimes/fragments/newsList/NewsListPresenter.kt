@@ -56,6 +56,7 @@ class NewsListPresenter: MvpPresenter<NewsListView>() {
                             false -> {
                                 news?.clear()
                                 newsEntities
+
                             }
                         }
                         news?.let { viewState.showNews(it) }
