@@ -53,7 +53,7 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
         super.onViewCreated(view, savedInstanceState)
         arguments?.apply {
             newsId = getInt(ID_NEWS)
-            newsDetailPresenter.loadNews(newsId)
+            newsDetailPresenter.loadNewsFromDb(newsId)
         }
     }
 
@@ -80,7 +80,7 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE -> newsDetailPresenter.loadNews(newsId)
+                REQUEST_CODE -> newsDetailPresenter.loadNewsFromDb(newsId)
             }
         }
     }

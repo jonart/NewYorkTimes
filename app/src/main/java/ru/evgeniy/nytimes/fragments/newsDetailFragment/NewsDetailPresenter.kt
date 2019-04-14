@@ -14,7 +14,7 @@ class NewsDetailPresenter: MvpPresenter<NewsDetailView>() {
     var disposable = CompositeDisposable()
 
 
-    fun loadNews(newsId:Int) {
+    fun loadNewsFromDb(newsId:Int) {
         disposable.add(getNewsDao().getNewsById(newsId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
