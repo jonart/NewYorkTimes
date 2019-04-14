@@ -14,11 +14,12 @@ import ru.evgeniy.nytimes.data.db.NewsEntity
 import ru.evgeniy.nytimes.news.StoryMappers
 
 @InjectViewState
-class NewsListPresenter: MvpPresenter<NewsListView>() {
+class NewsListPresenter : MvpPresenter<NewsListView>() {
     private var news: MutableList<NewsEntity>? = null
     var disposable = CompositeDisposable()
+    private var currentCategory: String = ""
 
-    fun getNewsFromInternet(category: String) {
+    private fun getNewsFromInternet(category: String) {
         if (isOnline()) {
             viewState.showProgressBar(true)
             disposable.add(App.restApi
@@ -45,18 +46,28 @@ class NewsListPresenter: MvpPresenter<NewsListView>() {
         }
     }
 
+    fun swiped(){
+        getNewsFromInternet(currentCategory)
+    }
+
+    fun onMenuItemSelected(category: String) {
+        if (category != currentCategory) {
+            currentCategory = category
+            getNewsFromInternet(currentCategory)
+        }
+    }
+
     fun getNewsFromDb() {
         disposable.add(Single.fromCallable { getNewsDao().news }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { newsEntities ->
                     news?.let { niceNews ->
-                        news = when(niceNews.isEmpty()){
+                        news = when (niceNews.isEmpty()) {
                             true -> newsEntities
                             false -> {
                                 news?.clear()
                                 newsEntities
-
                             }
                         }
                         news?.let { viewState.showNews(it) }

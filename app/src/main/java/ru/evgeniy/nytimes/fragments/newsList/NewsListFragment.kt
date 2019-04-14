@@ -26,7 +26,6 @@ import java.util.*
 
 class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView {
 
-
     companion object {
         private const val SPAN_COUNT = 2
         private const val SPACING = 16
@@ -34,9 +33,6 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
 
     @InjectPresenter
     lateinit var newsListPresenter: NewsListPresenter
-
-    @ProvidePresenter
-    fun provideNewsListPresenter() = NewsListPresenter()
 
 
     private var spinner: Spinner? = null
@@ -66,10 +62,9 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         }
         news_recycler.addItemDecoration(ItemDecorator(SPACING))
 
-        fab.setOnClickListener { newsListPresenter.getNewsFromInternet(nowCategory) }
         swipe_refresh.setOnRefreshListener {
             swipe_refresh.isRefreshing = false
-            newsListPresenter.getNewsFromDb()
+            newsListPresenter.swiped()
         }
     }
 
@@ -79,19 +74,19 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         val item = menu?.findItem(R.id.spinner_menu)
         spinner = item?.actionView as Spinner
 
-        val categoryList = ArrayList<String>()
-        categoryList.add("")
-        for (category in Category.values()) {
-            categoryList.add(category.serverValue())
+        val categoryList = Category.values().toList().map { it.serverValue() }
+
+        context?.let {context ->
+            val adapter = ArrayAdapter<String>(context,
+                    R.layout.support_simple_spinner_dropdown_item, categoryList)
+            spinner?.adapter = adapter
         }
-        val adapter = ArrayAdapter<String>(context, R.layout.support_simple_spinner_dropdown_item, categoryList)
-        spinner?.adapter = adapter
 
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
-                val name = adapterView.getItemAtPosition(position).toString()
-                nowCategory = name.toLowerCase()
-                if (nowCategory.isNotEmpty()) newsListPresenter.getNewsFromInternet(nowCategory)
+                val category = adapterView.getItemAtPosition(position).toString()
+                nowCategory = category.toLowerCase()
+                newsListPresenter.onMenuItemSelected(nowCategory)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
@@ -136,7 +131,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         Snackbar.make(coordinator_layout_news, R.string.internet_connection, Snackbar.LENGTH_LONG)
                 .setActionTextColor(Color.GRAY)
                 .setAction(R.string.retry) {
-                    newsListPresenter.getNewsFromInternet(nowCategory)
+                    newsListPresenter.onMenuItemSelected(nowCategory)
                 }
                 .show()
     }
