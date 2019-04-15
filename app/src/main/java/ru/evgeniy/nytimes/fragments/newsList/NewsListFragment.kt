@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_news_list.*
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.Category
@@ -22,7 +21,6 @@ import ru.evgeniy.nytimes.fragments.newsDetailFragment.NewsDetailFragment
 import ru.evgeniy.nytimes.news.ItemDecorator
 import ru.evgeniy.nytimes.news.NewsAdapter
 import ru.evgeniy.nytimes.news.NewsClickListener
-import java.util.*
 
 class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView {
 
@@ -40,6 +38,12 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
     private val mAdapter = NewsAdapter(this)
 
     fun newInstance() = NewsListFragment()
+
+
+    private fun isVertical(): Boolean {
+        val orientation = resources.configuration.orientation
+        return orientation != Configuration.ORIENTATION_LANDSCAPE
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +67,6 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         news_recycler.addItemDecoration(ItemDecorator(SPACING))
 
         swipe_refresh.setOnRefreshListener {
-            swipe_refresh.isRefreshing = false
             newsListPresenter.swiped()
         }
     }
@@ -76,7 +79,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
 
         val categoryList = Category.values().toList().map { it.serverValue() }
 
-        context?.let {context ->
+        context?.let { context ->
             val adapter = ArrayAdapter<String>(context,
                     R.layout.support_simple_spinner_dropdown_item, categoryList)
             spinner?.adapter = adapter
@@ -100,7 +103,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
 
     override fun onStop() {
         super.onStop()
-        newsListPresenter.disposable.clear()
+        newsListPresenter.disposeAll()
     }
 
 
@@ -114,10 +117,14 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
     }
 
     override fun showProgressBar(isTrue: Boolean) {
-        if (isTrue)
+        if (isTrue) {
             progress_bar.visibility = View.VISIBLE
-        else
+            swipe_refresh.isRefreshing = true
+        }
+        else {
             progress_bar.visibility = View.INVISIBLE
+            swipe_refresh.isRefreshing = false
+        }
     }
 
     override fun showNews(news: MutableList<NewsEntity>) {
@@ -134,10 +141,5 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
                     newsListPresenter.onMenuItemSelected(nowCategory)
                 }
                 .show()
-    }
-
-    private fun isVertical(): Boolean {
-        val orientation = resources.configuration.orientation
-        return orientation != Configuration.ORIENTATION_LANDSCAPE
     }
 }

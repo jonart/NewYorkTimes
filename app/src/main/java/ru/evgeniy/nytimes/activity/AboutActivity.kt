@@ -1,6 +1,5 @@
 package ru.evgeniy.nytimes.activity
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -27,24 +26,22 @@ class AboutActivity : MvpAppCompatActivity(), AboutView {
     @InjectPresenter
     lateinit var aboutPresenter:AboutPresenter
 
-    @ProvidePresenter
-    fun providePresenter() = AboutPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
         ib_telegram?.setOnClickListener {
-            aboutPresenter.openLink(getString(R.string.telegram))
+            aboutPresenter.clickTelegram(getString(R.string.telegram))
         }
         ib_vk?.setOnClickListener {
-            aboutPresenter.openLink(getString(R.string.vk))
+            aboutPresenter.clickVk(getString(R.string.vk))
         }
         ib_github?.setOnClickListener {
-            aboutPresenter.openLink(getString(R.string.github))
+            aboutPresenter.clickGit(getString(R.string.github))
         }
         btn_send_comment?.setOnClickListener {
-            if (et_message.toString().isNotEmpty())aboutPresenter.sendMessage(et_message.toString(),this)
+            if (et_message.toString().isNotEmpty())aboutPresenter.sendClicked(et_message.toString(),this)
         }
         createTextView()
     }
@@ -64,10 +61,8 @@ class AboutActivity : MvpAppCompatActivity(), AboutView {
     }
 
     override fun showMessage(message: String) {
-        Snackbar.make(my_linear, message, Snackbar.LENGTH_LONG).show()
+        Snackbar.make(linear_layout, message, Snackbar.LENGTH_LONG).show()
     }
-
-
 
     private fun createTextView() {
         val tv = TextView(this)
@@ -81,6 +76,6 @@ class AboutActivity : MvpAppCompatActivity(), AboutView {
 
         tv.layoutParams = layoutParams
         tv.gravity = Gravity.CENTER
-        my_linear?.addView(tv)
+        linear_layout?.addView(tv)
     }
 }

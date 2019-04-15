@@ -3,21 +3,33 @@ package ru.evgeniy.nytimes.fragments.newsList
 import android.content.Context
 import android.net.ConnectivityManager
 import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import ru.evgeniy.nytimes.App
 import ru.evgeniy.nytimes.data.db.NewsDao
 import ru.evgeniy.nytimes.data.db.NewsEntity
+import ru.evgeniy.nytimes.fragments.BasePresenter
 import ru.evgeniy.nytimes.news.StoryMappers
 
 @InjectViewState
-class NewsListPresenter : MvpPresenter<NewsListView>() {
-    private var news: MutableList<NewsEntity>? = null
-    var disposable = CompositeDisposable()
-    private var currentCategory: String = ""
+class NewsListPresenter : BasePresenter<NewsListView>() {
+
+    companion object{
+        private var news: MutableList<NewsEntity>? = null
+        private var currentCategory: String = ""
+    }
+
+
+    private fun isOnline(): Boolean {
+        val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val networkInfo = connectivityManager!!.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
+    private fun getNewsDao(): NewsDao {
+        return App.database.newsDao
+    }
 
     private fun getNewsFromInternet(category: String) {
         if (isOnline()) {
@@ -75,13 +87,4 @@ class NewsListPresenter : MvpPresenter<NewsListView>() {
                 })
     }
 
-    private fun isOnline(): Boolean {
-        val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        val networkInfo = connectivityManager!!.activeNetworkInfo
-        return networkInfo != null && networkInfo.isConnected
-    }
-
-    private fun getNewsDao(): NewsDao {
-        return App.database.newsDao
-    }
 }

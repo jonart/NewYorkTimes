@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
-import com.arellomobile.mvp.MvpPresenter
 import ru.evgeniy.nytimes.R
+import ru.evgeniy.nytimes.fragments.BasePresenter
 
 @InjectViewState
-class AboutPresenter: MvpPresenter<AboutView>() {
+class AboutPresenter: BasePresenter<AboutView>() {
 
-    fun sendMessage(message:String, context:Context){
+    fun sendClicked(message:String, context:Context){
         if(message.isNotEmpty()) {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
@@ -28,6 +28,18 @@ class AboutPresenter: MvpPresenter<AboutView>() {
 
     fun openLink(link: String) {
         viewState.openLink(link)
+    }
+
+    fun clickVk(link: String){
+        openLink(link)
+    }
+
+    fun clickTelegram(link: String){
+        openLink(link)
+    }
+
+    fun clickGit(link: String){
+        openLink(link)
     }
 
         private fun isEmailInstalled(context: Context): Boolean {

@@ -8,13 +8,12 @@ import android.support.v4.app.Fragment
 import android.view.*
 import com.arellomobile.mvp.MvpAppCompatFragment
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_news_detail.*
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.db.NewsEntity
-import ru.evgeniy.nytimes.fragments.newsEditor.EditorActivity
+import ru.evgeniy.nytimes.fragments.newsEditor.EditorFragment
 
 class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
 
@@ -27,8 +26,6 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
     @InjectPresenter
     lateinit var newsDetailPresenter:NewsDetailPresenter
 
-    @ProvidePresenter
-    fun provideDetailPresenter() = NewsDetailPresenter()
 
     fun newInstance(id: Int): Fragment {
         val fragment = NewsDetailFragment()
@@ -64,13 +61,16 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_delete -> {
-                newsDetailPresenter.deleteNews(newsId)
+                newsDetailPresenter.clickOnDelete(newsId)
                 return true
             }
             R.id.action_editor -> {
-                val intent = Intent(context, EditorActivity::class.java)
-                intent.putExtra(ID_NEWS, newsId)
-                startActivityForResult(intent, REQUEST_CODE)
+                activity?.supportFragmentManager?.apply {
+                    beginTransaction()
+                            .replace(R.id.news_container, EditorFragment().newInstance(newsId))
+                            .addToBackStack(null)
+                            .commit()
+                }
                 return true
             }
         }
@@ -85,7 +85,7 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
         }
     }
 
-    override fun popUp() {
+    override fun closeFragment() {
         fragmentManager?.popBackStack()
     }
 
@@ -98,9 +98,8 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
         text_news.text = newsEntity.fullText
     }
 
-    override fun onStop() {
-        super.onStop()
-        newsDetailPresenter.disposable.clear()
+    override fun onDestroy() {
+        super.onDestroy()
+        newsDetailPresenter.disposeAll()
     }
-
 }
