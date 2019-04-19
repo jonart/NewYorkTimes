@@ -2,6 +2,7 @@ package ru.evgeniy.nytimes.news
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import java.text.SimpleDateFormat
 
 import ru.evgeniy.nytimes.R
+import ru.evgeniy.nytimes.UtilDateFormatter
 import ru.evgeniy.nytimes.data.db.NewsEntity
 
 class NewsHolder(item: View) : RecyclerView.ViewHolder(item) {
@@ -21,15 +23,12 @@ class NewsHolder(item: View) : RecyclerView.ViewHolder(item) {
     private val mDate: TextView = item.findViewById(R.id.item_news_layout_recycler_date)
     private val mImageView: ImageView = item.findViewById(R.id.item_news_layout_recycler_img)
 
-    @SuppressLint("SimpleDateFormat")
-    var mSimpleDateFormat = SimpleDateFormat("yyyy.MM.dd")
-
 
     fun bind(item: NewsEntity, onClick: NewsClickListener) {
         mCategory.text = item.category
         mTitle.text = item.title
         mText.text = item.fullText
-        mDate.text = item.publishDate
+        mDate.text = item.publishDate?.let { UtilDateFormatter.getDate(it) }
         if (item.imageUrl == null) {
             Glide.with(mImageView)
                     .load(R.drawable.notavailable)

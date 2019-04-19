@@ -23,7 +23,7 @@ class NewsListPresenter : BasePresenter<NewsListView>() {
 
     private fun isOnline(): Boolean {
         val connectivityManager = App.context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        val networkInfo = connectivityManager!!.activeNetworkInfo
+        val networkInfo = connectivityManager?.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
 

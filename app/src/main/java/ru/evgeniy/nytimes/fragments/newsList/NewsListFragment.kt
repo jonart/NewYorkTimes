@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -117,14 +118,17 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
     }
 
     override fun showProgressBar(isTrue: Boolean) {
-        if (isTrue) {
-            progress_bar.visibility = View.VISIBLE
-            swipe_refresh.isRefreshing = true
+        when (isTrue) {
+            true -> {
+                progress_bar.visibility = View.VISIBLE
+                swipe_refresh.isRefreshing = true
+            }
+            false -> {
+                progress_bar.visibility = View.GONE
+                swipe_refresh.isRefreshing = false
+            }
         }
-        else {
-            progress_bar.visibility = View.INVISIBLE
-            swipe_refresh.isRefreshing = false
-        }
+
     }
 
     override fun showNews(news: MutableList<NewsEntity>) {
