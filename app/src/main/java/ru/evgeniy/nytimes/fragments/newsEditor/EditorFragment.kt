@@ -16,6 +16,13 @@ class EditorFragment: MvpAppCompatFragment(), NewsView {
 
     companion object {
         private const val ID_NEWS = "ID_NEWS"
+        fun newInstance(id: Int): Fragment {
+            val fragment = EditorFragment()
+            val bundle = Bundle()
+            bundle.putInt(ID_NEWS, id)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
     private var newsId: Int = 0
 
@@ -24,13 +31,7 @@ class EditorFragment: MvpAppCompatFragment(), NewsView {
     lateinit var newsPresenter:NewsPresenter
 
 
-    fun newInstance(id: Int): Fragment {
-        val fragment = EditorFragment()
-        val bundle = Bundle()
-        bundle.putInt(ID_NEWS, id)
-        fragment.arguments = bundle
-        return fragment
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

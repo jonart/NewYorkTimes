@@ -21,19 +21,20 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
         private const val  REQUEST_CODE = 1
         private const val ID_NEWS = "ID_NEWS"
         private var newsId:Int = 0
+        fun newInstance(id: Int): Fragment {
+            val fragment = NewsDetailFragment()
+            val bundle = Bundle()
+            bundle.putInt(ID_NEWS, id)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     @InjectPresenter
     lateinit var newsDetailPresenter:NewsDetailPresenter
 
 
-    fun newInstance(id: Int): Fragment {
-        val fragment = NewsDetailFragment()
-        val bundle = Bundle()
-        bundle.putInt(ID_NEWS, id)
-        fragment.arguments = bundle
-        return fragment
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +68,7 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
             R.id.action_editor -> {
                 activity?.supportFragmentManager?.apply {
                     beginTransaction()
-                            .replace(R.id.news_container, EditorFragment().newInstance(newsId))
+                            .replace(R.id.news_container, EditorFragment.newInstance(newsId))
                             .addToBackStack(null)
                             .commit()
                 }

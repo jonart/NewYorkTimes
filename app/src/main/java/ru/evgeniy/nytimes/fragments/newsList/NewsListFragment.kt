@@ -111,7 +111,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
     override fun onItemClick(item: NewsEntity) {
         activity?.supportFragmentManager?.apply {
             beginTransaction()
-                    .replace(R.id.news_container, NewsDetailFragment().newInstance(item.id))
+                    .replace(R.id.news_container, NewsDetailFragment.newInstance(item.id))
                     .addToBackStack(null)
                     .commit()
         }
