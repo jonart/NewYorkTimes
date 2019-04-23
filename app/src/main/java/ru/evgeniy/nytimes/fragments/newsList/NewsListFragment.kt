@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -36,6 +35,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
 
     private var spinner: Spinner? = null
     private var nowCategory = ""
+    private var nowPosition = -1
     private val mAdapter = NewsAdapter(this)
 
     fun newInstance() = NewsListFragment()
@@ -67,6 +67,10 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         }
         news_recycler.addItemDecoration(ItemDecorator(SPACING))
 
+        if (savedInstanceState != null){
+            nowPosition = savedInstanceState.getInt("KEY")
+        }
+
         swipe_refresh.setOnRefreshListener {
             newsListPresenter.swiped()
         }
@@ -86,10 +90,15 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
             spinner?.adapter = adapter
         }
 
+        if (nowPosition != -1){
+            spinner?.setSelection(nowPosition)
+        }
+
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
                 val category = adapterView.getItemAtPosition(position).toString()
                 nowCategory = category.toLowerCase()
+                nowPosition = position
                 newsListPresenter.onMenuItemSelected(nowCategory)
             }
 
@@ -104,12 +113,14 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
 
     override fun onStop() {
         super.onStop()
+        val bundle = Bundle()
+        bundle.putInt("KEY", nowPosition)
         newsListPresenter.disposeAll()
     }
 
 
     override fun onItemClick(item: NewsEntity) {
-        activity?.supportFragmentManager?.apply {
+        requireFragmentManager().apply {
             beginTransaction()
                     .replace(R.id.news_container, NewsDetailFragment.newInstance(item.id))
                     .addToBackStack(null)
