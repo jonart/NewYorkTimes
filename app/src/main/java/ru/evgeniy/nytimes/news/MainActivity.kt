@@ -3,11 +3,11 @@ package ru.evgeniy.nytimes.news
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import ru.evgeniy.nytimes.fragments.NewsListFragment
+import com.arellomobile.mvp.MvpAppCompatActivity
+import ru.evgeniy.nytimes.fragments.newsList.NewsListFragment
 import ru.evgeniy.nytimes.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : MvpAppCompatActivity() {
     companion object {
         fun create(context:Context):Intent = Intent(context, MainActivity::class.java)
     }

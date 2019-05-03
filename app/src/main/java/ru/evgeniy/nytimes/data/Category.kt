@@ -4,8 +4,8 @@ import android.support.annotation.StringRes
 
 import ru.evgeniy.nytimes.R
 
-enum class Category private constructor(private val serverValue: String,
-                                        @param:StringRes internal val displayResId: Int) {
+enum class Category(private val serverValue: String,
+                    @param:StringRes internal val displayResId: Int) {
 
     HOME("home", R.string.category_home),
     OPINION("opinion", R.string.category_opinion),
