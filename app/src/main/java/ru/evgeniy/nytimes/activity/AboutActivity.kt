@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.arellomobile.mvp.MvpAppCompatActivity
 import com.arellomobile.mvp.presenter.InjectPresenter
-import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.activity_about.*
 import kotlinx.android.synthetic.main.linear.*
 import ru.evgeniy.nytimes.R
@@ -31,16 +30,16 @@ class AboutActivity : MvpAppCompatActivity(), AboutView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
-        ib_telegram?.setOnClickListener {
+        ib_telegram.setOnClickListener {
             aboutPresenter.clickTelegram(getString(R.string.telegram))
         }
-        ib_vk?.setOnClickListener {
+        ib_vk.setOnClickListener {
             aboutPresenter.clickVk(getString(R.string.vk))
         }
-        ib_github?.setOnClickListener {
+        ib_github.setOnClickListener {
             aboutPresenter.clickGit(getString(R.string.github))
         }
-        btn_send_comment?.setOnClickListener {
+        btn_send_comment.setOnClickListener {
             if (et_message.toString().isNotEmpty())aboutPresenter.sendClicked(et_message.toString(),this)
         }
         createTextView()
@@ -76,6 +75,6 @@ class AboutActivity : MvpAppCompatActivity(), AboutView {
 
         tv.layoutParams = layoutParams
         tv.gravity = Gravity.CENTER
-        linear_layout?.addView(tv)
+        linear_layout.addView(tv)
     }
 }

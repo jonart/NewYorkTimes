@@ -5,9 +5,10 @@ import com.arellomobile.mvp.MvpView
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BasePresenter<View : MvpView> : MvpPresenter<View>() {
-    var disposable = CompositeDisposable()
+    val disposable = CompositeDisposable()
 
-    fun disposeAll() {
+    override fun onDestroy() {
+        super.onDestroy()
         disposable.clear()
     }
 }
