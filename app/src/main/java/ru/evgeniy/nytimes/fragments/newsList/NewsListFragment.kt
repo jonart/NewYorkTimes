@@ -35,7 +35,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
 
     private var spinner: Spinner? = null
     private var nowCategory = ""
-    private var nowPosition = -1
+    private var nowPositionCategory = -1
     private val mAdapter = NewsAdapter(this)
 
     fun newInstance() = NewsListFragment()
@@ -68,7 +68,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         news_recycler.addItemDecoration(ItemDecorator(SPACING))
 
         if (savedInstanceState != null){
-            nowPosition = savedInstanceState.getInt("KEY")
+            nowPositionCategory = savedInstanceState.getInt("KEY")
         }
 
         swipe_refresh.setOnRefreshListener {
@@ -90,15 +90,15 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
             spinner?.adapter = adapter
         }
 
-        if (nowPosition != -1){
-            spinner?.setSelection(nowPosition)
+        if (nowPositionCategory != -1){
+            spinner?.setSelection(nowPositionCategory)
         }
 
         spinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(adapterView: AdapterView<*>, view: View, position: Int, l: Long) {
                 val category = adapterView.getItemAtPosition(position).toString()
                 nowCategory = category.toLowerCase()
-                nowPosition = position
+                nowPositionCategory = position
                 newsListPresenter.onMenuItemSelected(nowCategory)
             }
 
@@ -114,8 +114,7 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
     override fun onStop() {
         super.onStop()
         val bundle = Bundle()
-        bundle.putInt("KEY", nowPosition)
-        newsListPresenter.disposeAll()
+        bundle.putInt("KEY", nowPositionCategory)
     }
 
 

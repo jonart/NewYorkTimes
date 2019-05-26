@@ -99,8 +99,4 @@ class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
         text_news.text = newsEntity.fullText
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        newsDetailPresenter.disposeAll()
-    }
 }

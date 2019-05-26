@@ -71,11 +71,6 @@ class EditorFragment: MvpAppCompatFragment(), NewsView {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        newsPresenter.disposeAll()
-    }
-
     override fun result() {
         targetFragment?.onActivityResult(targetRequestCode,Activity.RESULT_OK,null)
         fragmentManager?.popBackStack()

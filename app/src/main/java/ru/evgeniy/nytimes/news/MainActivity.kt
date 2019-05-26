@@ -18,12 +18,13 @@ class MainActivity : MvpAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        val mFragment = NewsListFragment().newInstance()
-        fragmentManager.beginTransaction()
-                .replace(R.id.news_container, mFragment)
-                .addToBackStack(mFragment.tag)
-                .commit()
+        if (savedInstanceState == null){
+            val mFragment = NewsListFragment().newInstance()
+            fragmentManager.beginTransaction()
+                    .replace(R.id.news_container, mFragment)
+                    .addToBackStack(mFragment.tag)
+                    .commit()
+        }
     }
 
     override fun onBackPressed() {
