@@ -1,16 +1,12 @@
-package ru.evgeniy.nytimes.news
+package ru.evgeniy.nytimes.screens.newsList
 
-import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
-import android.text.format.DateUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-
-import java.text.SimpleDateFormat
 
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.UtilDateFormatter
@@ -24,7 +20,7 @@ class NewsHolder(item: View) : RecyclerView.ViewHolder(item) {
     private val mImageView: ImageView = item.findViewById(R.id.item_news_layout_recycler_img)
 
 
-    fun bind(item: NewsEntity, onClick: NewsClickListener) {
+    fun bind(item: NewsEntity, onClick: (NewsEntity) -> Unit) {
         mCategory.text = item.category
         mTitle.text = item.title
         mText.text = item.fullText
@@ -41,6 +37,6 @@ class NewsHolder(item: View) : RecyclerView.ViewHolder(item) {
                     .into(mImageView)
         }
 
-        itemView.setOnClickListener { onClick.onItemClick(item) }
+        itemView.setOnClickListener { onClick.invoke(item) }
     }
 }

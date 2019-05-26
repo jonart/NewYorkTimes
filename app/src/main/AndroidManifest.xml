@@ -12,11 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".news.MainActivity"/>
-        <activity android:name=".fragments.newsEditor.EditorActivity" />
+        <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.PreviewActivity" />
-        <activity android:name=".activity.AboutActivity"/>
-        <activity android:name=".activity.IntroActivity">
+        <activity android:name=".activity.about.AboutActivity"/>
+        <activity android:name=".activity.Intro.IntroActivity">
             <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.activity
+package ru.evgeniy.nytimes.activity.Intro
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,9 +12,8 @@ import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import me.relex.circleindicator.CircleIndicator
 import ru.evgeniy.nytimes.App
-import ru.evgeniy.nytimes.fragments.intro.IntroFragment
 import ru.evgeniy.nytimes.R
-import ru.evgeniy.nytimes.news.MainActivity
+import ru.evgeniy.nytimes.activity.MainActivity
 
 class IntroActivity : AppCompatActivity() {
 

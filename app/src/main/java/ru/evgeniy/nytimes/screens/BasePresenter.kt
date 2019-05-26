@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.fragments
+package ru.evgeniy.nytimes.screens
 
 import com.arellomobile.mvp.MvpPresenter
 import com.arellomobile.mvp.MvpView

@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.fragments.newsDetailFragment
+package ru.evgeniy.nytimes.screens.newsDetailFragment
 
 
 import android.app.Activity
@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_news_detail.*
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.db.NewsEntity
-import ru.evgeniy.nytimes.fragments.newsEditor.EditorFragment
+import ru.evgeniy.nytimes.screens.newsEditor.EditorFragment
 
 class NewsDetailFragment : MvpAppCompatFragment(), NewsDetailView {
 

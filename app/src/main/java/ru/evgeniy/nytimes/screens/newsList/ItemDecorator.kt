@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.news
+package ru.evgeniy.nytimes.screens.newsList
 
 import android.graphics.Rect
 import android.support.v7.widget.RecyclerView

@@ -1,10 +1,10 @@
-package ru.evgeniy.nytimes.news
+package ru.evgeniy.nytimes.activity
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.arellomobile.mvp.MvpAppCompatActivity
-import ru.evgeniy.nytimes.fragments.newsList.NewsListFragment
+import ru.evgeniy.nytimes.screens.newsList.NewsListFragment
 import ru.evgeniy.nytimes.R
 
 class MainActivity : MvpAppCompatActivity() {

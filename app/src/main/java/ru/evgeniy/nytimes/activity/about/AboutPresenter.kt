@@ -1,11 +1,11 @@
-package ru.evgeniy.nytimes.activity
+package ru.evgeniy.nytimes.activity.about
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.arellomobile.mvp.InjectViewState
 import ru.evgeniy.nytimes.R
-import ru.evgeniy.nytimes.fragments.BasePresenter
+import ru.evgeniy.nytimes.screens.BasePresenter
 
 @InjectViewState
 class AboutPresenter: BasePresenter<AboutView>() {

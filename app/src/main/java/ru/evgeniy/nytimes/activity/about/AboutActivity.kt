@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.activity
+package ru.evgeniy.nytimes.activity.about
 
 import android.content.Intent
 import android.net.Uri
@@ -23,7 +23,7 @@ class AboutActivity : MvpAppCompatActivity(), AboutView {
     }
 
     @InjectPresenter
-    lateinit var aboutPresenter:AboutPresenter
+    lateinit var aboutPresenter: AboutPresenter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

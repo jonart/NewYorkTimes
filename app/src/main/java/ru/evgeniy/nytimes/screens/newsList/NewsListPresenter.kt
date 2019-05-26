@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.fragments.newsList
+package ru.evgeniy.nytimes.screens.newsList
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -9,8 +9,7 @@ import io.reactivex.schedulers.Schedulers
 import ru.evgeniy.nytimes.App
 import ru.evgeniy.nytimes.data.db.NewsDao
 import ru.evgeniy.nytimes.data.db.NewsEntity
-import ru.evgeniy.nytimes.fragments.BasePresenter
-import ru.evgeniy.nytimes.news.StoryMappers
+import ru.evgeniy.nytimes.screens.BasePresenter
 
 @InjectViewState
 class NewsListPresenter : BasePresenter<NewsListView>() {
@@ -36,7 +35,7 @@ class NewsListPresenter : BasePresenter<NewsListView>() {
             viewState.showProgressBar(true)
             disposable.add(App.restApi
                     .getNews(category.replace(" ", ""))
-                    .map { responseStory -> responseStory.results?.let { StoryMappers.map(it) } }
+                    .map { responseStory -> responseStory.results?.let { StoryConverter.map(it) } }
                     .subscribeOn(Schedulers.io())
                     .doOnSuccess { newsItems ->
                         getNewsDao().deleteAllNews()

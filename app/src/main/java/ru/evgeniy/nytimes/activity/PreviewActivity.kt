@@ -43,7 +43,7 @@ class PreviewActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.no_apps_email, Toast.LENGTH_LONG).show()
     }
 
-    fun isEmailInstalled(context: Context): Boolean {
+    private fun isEmailInstalled(context: Context): Boolean {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
         val packageManager = context.packageManager

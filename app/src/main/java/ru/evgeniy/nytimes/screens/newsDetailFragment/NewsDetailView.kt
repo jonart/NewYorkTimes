@@ -1,16 +1,13 @@
-package ru.evgeniy.nytimes.fragments.newsList
+package ru.evgeniy.nytimes.screens.newsDetailFragment
 
 import com.arellomobile.mvp.MvpView
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType
 import ru.evgeniy.nytimes.data.db.NewsEntity
 
-interface NewsListView: MvpView {
-
+interface NewsDetailView:MvpView {
     @StateStrategyType(AddToEndSingleStrategy::class )
-    fun showNews(news:MutableList<NewsEntity>)
+    fun showNews(newsEntity: NewsEntity)
     @StateStrategyType(AddToEndSingleStrategy::class )
-    fun showProgressBar(isTrue: Boolean)
-    @StateStrategyType(AddToEndSingleStrategy::class )
-    fun showMessage(message:String)
+    fun closeFragment()
 }

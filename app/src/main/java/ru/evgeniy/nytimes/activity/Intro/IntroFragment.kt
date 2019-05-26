@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.fragments.intro
+package ru.evgeniy.nytimes.activity.Intro
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

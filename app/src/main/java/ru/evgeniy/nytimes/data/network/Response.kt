@@ -1,8 +1,9 @@
-package ru.evgeniy.nytimes.data.network.dto
+package ru.evgeniy.nytimes.data.network
 
 import com.google.gson.annotations.SerializedName
 
 import io.reactivex.annotations.NonNull
+import ru.evgeniy.nytimes.data.network.dto.NewsDTO
 
 class Response {
 

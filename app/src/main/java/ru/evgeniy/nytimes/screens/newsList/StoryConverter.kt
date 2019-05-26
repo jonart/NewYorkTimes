@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.news
+package ru.evgeniy.nytimes.screens.newsList
 
 import java.util.ArrayList
 import java.util.Collections
@@ -7,7 +7,7 @@ import ru.evgeniy.nytimes.data.db.NewsEntity
 import ru.evgeniy.nytimes.data.network.dto.MultimediaDTO
 import ru.evgeniy.nytimes.data.network.dto.NewsDTO
 
-class StoryMappers private constructor() {
+class StoryConverter private constructor() {
 
     init {
         throw AssertionError("Must be no instance")

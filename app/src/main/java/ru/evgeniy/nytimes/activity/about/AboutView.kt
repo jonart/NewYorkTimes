@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.activity
+package ru.evgeniy.nytimes.activity.about
 
 import android.content.Intent
 import com.arellomobile.mvp.MvpView

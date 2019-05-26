@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.fragments.newsList
+package ru.evgeniy.nytimes.screens.newsList
 
 
 import android.content.res.Configuration
@@ -17,12 +17,9 @@ import kotlinx.android.synthetic.main.fragment_news_list.*
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.Category
 import ru.evgeniy.nytimes.data.db.NewsEntity
-import ru.evgeniy.nytimes.fragments.newsDetailFragment.NewsDetailFragment
-import ru.evgeniy.nytimes.news.ItemDecorator
-import ru.evgeniy.nytimes.news.NewsAdapter
-import ru.evgeniy.nytimes.news.NewsClickListener
+import ru.evgeniy.nytimes.screens.newsDetailFragment.NewsDetailFragment
 
-class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView {
+class NewsListFragment : MvpAppCompatFragment(), NewsListView {
 
     companion object {
         private const val SPAN_COUNT = 2
@@ -36,7 +33,13 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
     private var spinner: Spinner? = null
     private var nowCategory = ""
     private var nowPositionCategory = -1
-    private val mAdapter = NewsAdapter(this)
+    private val mAdapter = NewsAdapter {
+        requireFragmentManager().apply {
+        beginTransaction()
+                .replace(R.id.news_container, NewsDetailFragment.newInstance(it.id))
+                .addToBackStack(null)
+                .commit()
+    }}
 
     fun newInstance() = NewsListFragment()
 
@@ -115,16 +118,6 @@ class NewsListFragment : MvpAppCompatFragment(), NewsClickListener, NewsListView
         super.onStop()
         val bundle = Bundle()
         bundle.putInt("KEY", nowPositionCategory)
-    }
-
-
-    override fun onItemClick(item: NewsEntity) {
-        requireFragmentManager().apply {
-            beginTransaction()
-                    .replace(R.id.news_container, NewsDetailFragment.newInstance(item.id))
-                    .addToBackStack(null)
-                    .commit()
-        }
     }
 
     override fun showProgressBar(isTrue: Boolean) {

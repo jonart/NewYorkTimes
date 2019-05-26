@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.fragments.newsEditor
+package ru.evgeniy.nytimes.screens.newsEditor
 
 import android.app.Activity
 import android.os.Bundle

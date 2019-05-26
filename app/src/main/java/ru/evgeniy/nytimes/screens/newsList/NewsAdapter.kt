@@ -1,4 +1,4 @@
-package ru.evgeniy.nytimes.news
+package ru.evgeniy.nytimes.screens.newsList
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,15 +7,13 @@ import android.view.ViewGroup
 import ru.evgeniy.nytimes.R
 import ru.evgeniy.nytimes.data.db.NewsEntity
 
-class NewsAdapter(private val onClick: NewsClickListener) : RecyclerView.Adapter<NewsHolder>() {
+class NewsAdapter(private val onClick:(NewsEntity) -> Unit) : RecyclerView.Adapter<NewsHolder>() {
 
-    private var items: MutableList<NewsEntity>? = null
+    private val news: MutableList<NewsEntity> = mutableListOf()
 
     fun addData(items: MutableList<NewsEntity>) {
-        if (this.items != null) {
-            this.items!!.clear()
-        }
-        this.items = items
+        news.clear()
+        news.addAll(items)
         notifyDataSetChanged()
     }
 
@@ -25,10 +23,10 @@ class NewsAdapter(private val onClick: NewsClickListener) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(newsHolder: NewsHolder, i: Int) {
-        newsHolder.bind(items!![i], onClick)
+        newsHolder.bind(news[i], onClick)
     }
 
     override fun getItemCount(): Int {
-        return items!!.size
+        return news.size
     }
 }
